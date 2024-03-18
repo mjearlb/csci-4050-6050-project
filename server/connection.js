@@ -1,12 +1,16 @@
 var mysql = require('mysql');
 
-var con = mysql.createConnection({
+var connection = mysql.createConnection({
   host: "localhost",
   user: "swe-proj-sql-user",
-  password: "/Liang1234"
+  password: "/Liang1234",
+  database: "csci_swe_project"
 });
 
-con.connect(function(err) {
+connection.connect(function(err) {
   if (err) throw err;
   console.log("Connected!");
 });
+
+// close the MySQL connection
+connection.end();
