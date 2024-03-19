@@ -6,3 +6,9 @@ const pool = mysql.createPool({
     password: '/Liang1234',
     database: 'csci_swe_project'
 }).promise()
+
+const result = await pool.query("SELECT * FROM notes")
+const rows = result[0]
+// or: const [rows] = await pool.query("SELECT * FROM notes")
+console.log(rows)
+
