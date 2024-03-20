@@ -7,7 +7,7 @@ app.get('/', (req, res) => {
 }) // allows http get request which will return Hello World
 
 app.get("/goodbye", (req, res) => { // REQuest and RESponse
-    res.send("Goodbye World!")
+    res.send("<h1>Goodbye World!</h1>")
 })
 
 app.listen(port, () => {
