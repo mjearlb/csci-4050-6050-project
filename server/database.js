@@ -1,6 +1,5 @@
-var mysql = require('mysql');
-import mysql from 'mysql2'
-import dotenv from 'dotenv'
+var mysql = require('mysql2');
+var dotenv = require('dotenv');
 dotenv.config()
 
 const pool = mysql.createPool({
@@ -10,7 +9,35 @@ const pool = mysql.createPool({
     database: process.env.MYSQL_DATABASE // 'csci_swe_project'
 }).promise()
 
-con.connect(function(err) {
-  if (err) throw err;
-  console.log("Connected!");
-});
+async function getUsers() {
+    const result = await pool.query("SELECT * FROM users")
+    const rows = result[0]
+    // or: const [rows] = await pool.query("SELECT * FROM users")
+    return rows
+} // getNotes
+
+async function getUser(id) {
+    const [rows] = await pool.query("SELECT * FROM users WHERE id = ?", [id]) 
+    return rows
+} // getNote
+
+async function createUser(username, lastname, firstname, email) {
+    const [result] = await pool.query("INSERT INTO users (username, last_name, first_name, email) VALUE (?, ?)", [username, lastname, firstname, email])
+    const id = result.insertId
+    return getNote(id)
+} // createNote
+
+module.exports = {
+    getUsers,
+    getUser,
+    createUser
+};
+
+// testing
+
+async function run() {
+    const users = await getUsers()
+    console.log(users)
+} 
+
+run()
