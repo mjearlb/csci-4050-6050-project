@@ -34,3 +34,4 @@ async function createNote(title, contents) {
 const result = await createNote('test', 'test')
 console.log(result)
 
+export { getNotes, getNote, createNote };
