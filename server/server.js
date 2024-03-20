@@ -1,7 +1,10 @@
-const express = require('express')
+const express = require('express');
 const app = express()
-const port = 3000
+const PORT = process.env.PORT || 3000;
 
-app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port} and http://localhost:${port}/goodbye`)
+const {getUsers, getUser, createUser} = require('./database.js');
+
+
+app.listen(PORT, () => {
+    console.log(`Example app listening at http://localhost:${PORT} and http://localhost:${PORT}/goodbye`)
 })
