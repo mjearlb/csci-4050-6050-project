@@ -1,6 +1,19 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 
 function App() {
+
+    const [backEndData, setBackEndData] = useState([{}])
+
+    useEffect(() => {
+	fetch("/api").then( // can just do "/api" since we set proxy in package.json
+	    response => response.json()
+	).then(
+	    data => {
+		setBackEndData(data)
+	    }
+	)
+    }, [])
+    
     return (
 	<div>
 
