@@ -37,7 +37,7 @@ module.exports = {
 
 async function run() {
     const users = await getUsers()
-    console.log(users)
+    // console.log(users)
 } 
 
 run()
