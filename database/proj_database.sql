@@ -129,7 +129,7 @@ CREATE TABLE `merchandise` (
 
 LOCK TABLES `merchandise` WRITE;
 /*!40000 ALTER TABLE `merchandise` DISABLE KEYS */;
-INSERT INTO `merchandise` VALUES (1,'Park T-Shirt S',100,20.00),(2,'Park T-Shirt M',100,20.00),(3,'Park T-Shirt L',100,20.00),(6,'Park T-Shirt XL',100,20.00),(7,'Park Branded Nalgene Water Bottle',100,25.00);
+INSERT INTO `merchandise` VALUES (1,'Park T-Shirt S',100,20.00),(2,'Park T-Shirt M',100,20.00),(3,'Park T-Shirt L',100,20.00),(4,'Park T-Shirt XL',100,20.00),(7,'Park Branded Nalgene Water Bottle',100,25.00);
 /*!40000 ALTER TABLE `merchandise` ENABLE KEYS */;
 UNLOCK TABLES;
 
