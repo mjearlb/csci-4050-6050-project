@@ -10,3 +10,9 @@ Branches:
 
 Roles: 
 - Milo Bauman: Project Lead, Project Structure Design, Database, Back-End
+
+Dependencies: 
+- Node JS: v20.11.1
+- MySQL: Ver 8.3.0 (Community Edition)
+- Express (npm i express)
+- React (npm i create-react-app)
