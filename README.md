@@ -7,3 +7,6 @@ Branches:
 - dev1: New Milo development branch. 
 - example: Contains example/ directory with an example Node project in it. Recommended to use/browse the 
 - commits to get familiar with Node. 
+
+Roles: 
+- Milo Bauman: Project Lead, Project Structure Design, Database, Back-End
