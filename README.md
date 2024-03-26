@@ -1,5 +1,5 @@
 # csci-4050-6050-project
-Our group's project for Spring 2024 CSCI 4050/6050 (Software Engineering) at the University of Georgia
+Our group's project for Spring 2024 CSCI 4050/6050 (Software Engineering) at the University of Georgia. Project is a web app which handles services for a theme park. 
 
 Branches: 
 - main: main branch
