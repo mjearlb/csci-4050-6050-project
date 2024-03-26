@@ -10,6 +10,10 @@ Branches:
 
 Roles: 
 - Milo Bauman: Project Lead, Project Structure Design, Database, Back-End
+- Caden: Requirements Gathering, Documentation, Testing, Back-End
+- Edward: Front-End, Testing
+- Hayden: Front-End, Testing
+- Alex: Back-End, Testing
 
 Dependencies: 
 - Node JS: v20.11.1
