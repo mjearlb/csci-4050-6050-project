@@ -21,10 +21,10 @@ async function getUser(id) {
     return rows
 } // getNote
 
-async function createUser(username, lastname, firstname, email) {
-    const [result] = await pool.query("INSERT INTO users (username, last_name, first_name, email) VALUE (?, ?)", [username, lastname, firstname, email])
+async function createUser(username, lastname, firstname, email, password) {
+    const [result] = await pool.query("INSERT INTO users (username, last_name, first_name, email, password) VALUE (?, ?, ?, ?, ?)", [username, lastname, firstname, email, password])
     const id = result.insertId
-    return getNote(id)
+    return result
 } // createNote
 
 module.exports = {
