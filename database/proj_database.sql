@@ -53,8 +53,7 @@ DROP TABLE IF EXISTS `cart`;
 CREATE TABLE `cart` (
   `cart_id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
-  `item_id` int DEFAULT NULL,
-  `ticket_id` int DEFAULT NULL,
+  `item_id` int NOT NULL,
   `quanitity` int NOT NULL DEFAULT '1',
   `time_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `is_active` tinyint(1) NOT NULL DEFAULT '1',
@@ -62,8 +61,7 @@ CREATE TABLE `cart` (
   KEY `fk_user_id_cart` (`user_id`),
   KEY `fk_item_id_cart` (`item_id`),
   CONSTRAINT `fk_item_id_cart` FOREIGN KEY (`item_id`) REFERENCES `merchandise` (`item_id`),
-  CONSTRAINT `fk_user_id_cart` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-  CONSTRAINT `item_or_ticket` CHECK ((((`item_id` is not null) and (`ticket_id` is null)) or ((`item_id` is null) and (`ticket_id` is not null))))
+  CONSTRAINT `fk_user_id_cart` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
