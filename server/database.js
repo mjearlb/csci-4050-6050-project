@@ -26,10 +26,18 @@ async function getUsername(id) {
     return rows
 } // getUsername
 
-async function createUser(username, lastname, firstname, email) {
-    const [result] = await pool.query("INSERT INTO users (username, last_name, first_name, email) VALUE (?, ?, ?, ?)", [username, lastname, firstname, email])
-    const id = result.insertId
-    return getNote(id)
+async function getId(username) {
+    const [rows] = await pool.query("SELECT id FROM users WHERE username = ?", [username]) 
+    return rows[0]
+} // getId
+
+async function createUser(username, lastname, firstname, email, password) {
+    const [result] = await pool.query("INSERT INTO users (username, last_name, first_name, email, password) VALUES (?, ?, ?, ?, ?)", [username, lastname, firstname, email, password])
+    if (result.affectedRows > 0) {
+        return true; // user was created
+      } else {
+        return false; // user was not created
+      }
 } // createNote
 
 async function getComments() {
@@ -38,14 +46,25 @@ async function getComments() {
     return rows
 } // getComments
 
-async function changeEmail(id, newemail) {
-    const [result] = await pool.query("UPDATE users SET email = ? WHERE id = ?", newemail, id)
+async function changeEmail(username, newemail) {
+    const user = await getId(username)
+    const id = user.id
+    const [result] = await pool.query("UPDATE users SET email = ? WHERE id = ?", [newemail, id])
     if (result.changedRows > 0) {
         return true; // Email was successfully updated
       } else {
         return false; // No rows were updated, email update failed
       }
 } // changeEmail
+
+async function removeUser(username) {
+    const [result] = await pool.query("DELETE FROM users WHERE username = ?", [username])
+    if (result.changedRows > 0) {
+        return true; // user was successfully removed
+      } else {
+        return false; // No rows were updated, user deletion failed
+      }
+} // removeUser
 
 module.exports = {
     getUsers,
@@ -58,8 +77,17 @@ module.exports = {
 // testing
 
 async function run() {
-    const users = await getUsers()
-    // console.log(users)
+    var users = await getUsers()
+    console.log(users)
+    const testRemoveUser = await removeUser("exampleGuy12")
+    users = await getUsers()
+    console.log(users)
+    const testCreateUser = await createUser("exampleGuy12", "Guy", "Example", "exampleguy@yahoo.com", "~!example1234!")
+    users = await getUsers()
+    console.log(users)
+    const testChangeEmail = await changeEmail("exampleGuy12", "exampleguy@gmail.com")
+    users = await getUsers()
+    console.log(users)
 } 
 
 run()
