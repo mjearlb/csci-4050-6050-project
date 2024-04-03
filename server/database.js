@@ -39,10 +39,22 @@ async function createUser(username, lastname, firstname, email, password) {
     const [result] = await pool.query("INSERT INTO users (username, last_name, first_name, email, password) VALUES (?, ?, ?, ?, ?)", [username, lastname, firstname, email, password])
     if (result.affectedRows > 0) {
         return true; // user was created
-      } else {
+    } else {
         return false; // user was not created
-      }
+    }
 } // createNote
+
+async function registerUser(username, lastname, firstname, email, password) {
+    const [emailCheck] = await pool.query("SELECT * FROM users WHERE email = ?", [email])
+    const [usernameCheck] = await pool.query("SELECT * FROM users WHERE username = ?", [username])
+    if (emailCheck.length > 0) {
+        return false
+    } 
+    if (usernameCheck.length > 0) {
+        return false
+    }
+    const result = await createUser(username, lastname, firstname, email, password)
+} // registerUser   
 
 async function getComments() {
     const result = await pool.query("SELECT * FROM comments")
@@ -82,7 +94,7 @@ async function purchaseTicket(userId, ticketType, dateValid) {
 module.exports = {
     getUsers,
     getUser,
-    createUser,
+    registerUser,
     getComments, 
     changeEmail, 
     purchaseTicket
@@ -91,7 +103,7 @@ module.exports = {
 // testing
 
 async function run() {
-    const testPurchaseTicket = await purchaseTicket(1019, `General Admission`, `2024-06-01`)
+    const testRegUser = registerUser("testUser", "Last", "First", "ex@ex.com", "Pass!")
 } 
 
 run()
