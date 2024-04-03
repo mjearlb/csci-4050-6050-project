@@ -2,16 +2,7 @@ const express = require('express');
 const app = express()
 const PORT = process.env.PORT || 3000;
 
-const {getUsers, getUser, createUser} = require('./database.js');
-
-app.get('/api', (req, res) => {
-    res.json({ "users": ["userOne", "userTwo", "userThree"] })
-})
-
-
-app.get('/date', (req, res) => {
-    res.send(`<h1>${Date()}</h1>`)
-})
+const {getUsers, getUser, createUser, getComments} = require('./database.js');
 
 app.get('/users', async (req, res) => {
     try {
@@ -20,6 +11,20 @@ app.get('/users', async (req, res) => {
     } catch (err) {
 	console.error(err);
 	res.status(500).send('Something went wrong');
+    }
+})
+
+app.get('/login', async (req, res) => {
+    res.send("login here:")
+})
+
+app.get('/comments', async (req, res) => {
+    try {
+        const users = await getComments();
+        res.json(users);
+        } catch (err) {
+        console.error(err);
+        res.status(500).send('Something went wrong');
     }
 })
 
