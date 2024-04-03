@@ -21,6 +21,11 @@ async function getUser(id) {
     return rows
 } // getNote
 
+async function getUsername(id) {
+    const [rows] = await pool.query("SELECT username FROM users WHERE id = ?", [id]) 
+    return rows
+} // getUsername
+
 async function createUser(username, lastname, firstname, email) {
     const [result] = await pool.query("INSERT INTO users (username, last_name, first_name, email) VALUE (?, ?, ?, ?)", [username, lastname, firstname, email])
     const id = result.insertId
@@ -33,11 +38,21 @@ async function getComments() {
     return rows
 } // getComments
 
+async function changeEmail(id, newemail) {
+    const [result] = await pool.query("UPDATE users SET email = ? WHERE id = ?", newemail, id)
+    if (result.changedRows > 0) {
+        return true; // Email was successfully updated
+      } else {
+        return false; // No rows were updated, email update failed
+      }
+} // changeEmail
+
 module.exports = {
     getUsers,
     getUser,
     createUser,
-    getComments
+    getComments, 
+    changeEmail
 };
 
 // testing
