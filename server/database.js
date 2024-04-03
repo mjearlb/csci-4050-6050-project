@@ -54,6 +54,7 @@ async function registerUser(username, lastname, firstname, email, password) {
         return false
     }
     const result = await createUser(username, lastname, firstname, email, password)
+    return result
 } // registerUser   
 
 async function getComments() {
