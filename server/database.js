@@ -9,6 +9,7 @@ const pool = mysql.createPool({
     database: process.env.MYSQL_DATABASE // 'csci_swe_project'
 }).promise()
 
+// returns all users
 async function getUsers() {
     const result = await pool.query("SELECT * FROM users")
     const rows = result[0]
@@ -16,16 +17,19 @@ async function getUsers() {
     return rows
 } // getNotes
 
+// returns user info for given id
 async function getUser(id) {
     const [rows] = await pool.query("SELECT * FROM users WHERE id = ?", [id]) 
     return rows
 } // getNote
 
+// returns username of user given id
 async function getUsername(id) {
     const [rows] = await pool.query("SELECT username FROM users WHERE id = ?", [id]) 
     return rows
 } // getUsername
 
+// 
 async function getId(username) {
     const [rows] = await pool.query("SELECT id FROM users WHERE username = ?", [username]) 
     return rows[0]
@@ -46,10 +50,10 @@ async function getComments() {
     return rows
 } // getComments
 
-async function changeEmail(username, newemail) {
+async function changeEmail(username, newEmail) {
     const user = await getId(username)
     const id = user.id
-    const [result] = await pool.query("UPDATE users SET email = ? WHERE id = ?", [newemail, id])
+    const [result] = await pool.query("UPDATE users SET email = ? WHERE id = ?", [newEmail, id])
     if (result.changedRows > 0) {
         return true; // Email was successfully updated
       } else {
@@ -61,10 +65,19 @@ async function removeUser(username) {
     const [result] = await pool.query("DELETE FROM users WHERE username = ?", [username])
     if (result.changedRows > 0) {
         return true; // user was successfully removed
-      } else {
+    } else {
         return false; // No rows were updated, user deletion failed
-      }
+    }
 } // removeUser
+
+async function purchaseTicket(userId, ticketType, dateValid) {
+    const [result] = await pool.query("INSERT INTO tickets (user_id, ticket_type, date_valid) VALUES (?,?,?)",[userId, ticketType, dateValid])
+    if (result.changedRows > 0) {
+        return true; // ticket was purchased
+    } else {
+        return false; // No rows were updated, ticket purchase failed
+    }
+} // purchaseTicket
 
 module.exports = {
     getUsers,
@@ -77,17 +90,7 @@ module.exports = {
 // testing
 
 async function run() {
-    var users = await getUsers()
-    console.log(users)
-    const testRemoveUser = await removeUser("exampleGuy12")
-    users = await getUsers()
-    console.log(users)
-    const testCreateUser = await createUser("exampleGuy12", "Guy", "Example", "exampleguy@yahoo.com", "~!example1234!")
-    users = await getUsers()
-    console.log(users)
-    const testChangeEmail = await changeEmail("exampleGuy12", "exampleguy@gmail.com")
-    users = await getUsers()
-    console.log(users)
+    const testPurchaseTicket = await purchaseTicket(1019, `General Admission`, `2024-06-01`)
 } 
 
 run()
