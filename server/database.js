@@ -84,7 +84,8 @@ module.exports = {
     getUser,
     createUser,
     getComments, 
-    changeEmail
+    changeEmail, 
+    purchaseTicket
 };
 
 // testing
