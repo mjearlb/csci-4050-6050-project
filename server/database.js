@@ -22,15 +22,22 @@ async function getUser(id) {
 } // getNote
 
 async function createUser(username, lastname, firstname, email) {
-    const [result] = await pool.query("INSERT INTO users (username, last_name, first_name, email) VALUE (?, ?)", [username, lastname, firstname, email])
+    const [result] = await pool.query("INSERT INTO users (username, last_name, first_name, email) VALUE (?, ?, ?, ?)", [username, lastname, firstname, email])
     const id = result.insertId
     return getNote(id)
 } // createNote
 
+async function getComments() {
+    const result = await pool.query("SELECT * FROM comments")
+    const rows = result[0]
+    return rows
+} // getComments
+
 module.exports = {
     getUsers,
     getUser,
-    createUser
+    createUser,
+    getComments
 };
 
 // testing
