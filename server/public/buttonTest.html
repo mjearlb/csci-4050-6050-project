@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Button Tests</title>
+</head>
+<body>
+
+<!-- Button with onclick event to redirect -->
+<button onclick="redirectToPage()">Go to Another Page</button>
+
+<script>
+  // JavaScript function to redirect to another page
+  function redirectToPage() {
+    // Replace 'target-page.html' with the URL of the page you want to redirect to
+    window.location.href = 'index';
+  }
+</script>
+
+
+<!-- Button with onclick event to count clicks -->
+<button onclick="countClicks()">Click Me!</button>
+
+<!-- Display the click count -->
+<p>Number of clicks: <span id="clickCount">0</span></p>
+
+<script>
+  // Variable to store the click count
+  let clicks = 0;
+
+  // Function to count clicks and update the button text
+  function countClicks() {
+    clicks++; // Increment the click count
+    document.getElementById('clickCount').textContent = clicks; // Update the displayed click count
+  }
+</script>
+
+
+<!-- Input box -->
+<input type="text" id="userInput" placeholder="Type something...">
+
+<!-- Button to print the typed text -->
+<button onclick="printText()">Print Text</button>
+
+<!-- Display area for printed text -->
+<div id="output"></div>
+
+<script>
+  // Function to print the text typed by the user
+  function printText() {
+    // Get the value typed by the user
+    let userInput = document.getElementById('userInput').value;
+    
+    // Display the typed text in the output area
+    document.getElementById('output').textContent = userInput;
+  }
+</script>
+
+</body>
+</html>

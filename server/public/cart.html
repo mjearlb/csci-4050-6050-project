@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/style.css">
+        <title>My App</title>
+    </head>
+    <body>
+        <h1>Number of items in cart: <span id="numberItems">0</span></h1>
+    </body>
+
+    <script>
+        const cart = await getCartItems(1000);
+        let numberItems = getNumber();
+        // let cart = await getCartItems(1000);
+        // let numberItems = cart.length;
+        function getNumber() {
+            numberItems = cart.length;
+            numberItems = 10;
+            return 10;
+        }
+    </script>
+</html>

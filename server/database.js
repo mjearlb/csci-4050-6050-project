@@ -29,6 +29,12 @@ async function getUsername(id) {
     return rows
 } // getUsername
 
+// returns cart items of user given id
+async function getCartItems(id) {
+    const [rows] = await pool.query("SELECT * FROM cart WHERE user_id = ?", [id])
+    return rows
+} // getCart
+
 // 
 async function getId(username) {
     const [rows] = await pool.query("SELECT id FROM users WHERE username = ?", [username]) 
@@ -98,7 +104,8 @@ module.exports = {
     registerUser,
     getComments, 
     changeEmail, 
-    purchaseTicket
+    purchaseTicket,
+    getCartItems
 };
 
 // testing
