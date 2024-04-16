@@ -1,5 +1,5 @@
 describe('Sample Test', () => {
-    test.todo('should test that true === true', () => {
+    test('should test that true === true', async () => {
         expect(true).toBe(true)
     })
 })
