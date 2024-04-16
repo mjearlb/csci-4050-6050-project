@@ -1,10 +1,12 @@
 const request = require('supertest');
 const app = require('../server');
 
-const exampleUserList = [{"date_registered": "2024-03-19T16:18:50.000Z", "email": "mjearlb@example.com", "first_name": "Milo", "id": 1000, "last_name": "Bauman", "password": "password", "username": "mjearlb"},
-                  {"date_registered": "2024-03-19T16:41:21.000Z", "email": "trey@phish.com", "first_name": "Trey", "id": 1001, "last_name": "Anastasio", "password": "phishRox!", "username": "treyanastasio"}, 
-                  {"date_registered": "2024-03-19T19:34:13.000Z", "email": "nathancastro@example.com", "first_name": "Nathan", "id": 1002, "last_name": "Castro", "password": "planes", "username": "nate600"}, 
-                  {"date_registered": "2024-04-15T21:26:58.000Z", "email": "ex@ex.com", "first_name": "First", "id": 1003, "last_name": "Last", "password": "Pass!", "username": "testUser"}];
+const exampleUserList = [
+    {"date_registered": "2024-03-19T16:18:50.000Z", "email": "mjearlb@example.com", "first_name": "Milo", "id": 1000, "last_name": "Bauman", "password": "password", "username": "mjearlb"},
+    {"date_registered": "2024-03-19T16:41:21.000Z", "email": "trey@phish.com", "first_name": "Trey", "id": 1001, "last_name": "Anastasio", "password": "phishRox!", "username": "treyanastasio"}, 
+    {"date_registered": "2024-03-19T19:34:13.000Z", "email": "nathancastro@example.com", "first_name": "Nathan", "id": 1002, "last_name": "Castro", "password": "planes", "username": "nate600"}, 
+    {"date_registered": "2024-04-15T21:26:58.000Z", "email": "ex@ex.com", "first_name": "First", "id": 1003, "last_name": "Last", "password": "Pass!", "username": "testUser"}
+];
 
 const exampleUser = [{
     "id": 1003,
