@@ -16,6 +16,16 @@ const exampleUser = [{
     "date_registered": "2024-04-15T21:26:58.000Z"
 }];
 
+const exampleEmailChange = [{
+    "id": 1003,
+    "username": "testUser",
+    "last_name": "Last",
+    "first_name": "First",
+    "email": "test_user@gmail.com",
+    "password": "Pass!",
+    "date_registered": "2024-04-15T21:26:58.000Z"
+}];
+
 // Unit test suite for GET /users/getUsers endpoint
 describe("GET /users/getUsers", () =>{
     test('responds to /users/getUsers', async () => {
@@ -46,6 +56,25 @@ describe("GET /users/getUser", () => {
 });
 
 
-// Unit test suite for 
+// Unit test suite for PUT /users/changeEmail/:username/:newEmail endpoint
+describe("PUT /users/changeEmail", () => {
+
+    // Change the email to the new Email
+    test('responds to /users/changeEmail/:username/:newEmail', async () => {
+        const res = await request(app).put('/users/changeEmail/testUser/test_user@gmail.com');
+        const new_res = await request(app).get('/users/getUser/1003');
+        expect(res.statusCode).toBe(200);
+        expect(new_res.body).toStrictEqual(exampleEmailChange);
+    });
+
+    // Change the email back again
+    test('respomds to /users/changeEmail/:username/:newEmail', async () => {
+        const res = await request(app).put('/users/changeEmail/testUser/ex@ex.com');
+        const new_res = await request(app).get('/users/getUser/1003');
+        expect(res.statusCode).toBe(200);
+        expect(new_res.body).toStrictEqual(exampleUser);
+    });
+
+});
 
 
