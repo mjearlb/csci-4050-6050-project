@@ -26,13 +26,33 @@ const exampleEmailChange = [{
     "date_registered": "2024-04-15T21:26:58.000Z"
 }];
 
+const exampleCommentsList = [
+    {
+        "id": 1,
+        "user_id": 1000,
+        "comment": "I enjoyed it.",
+        "parent_id": null,
+        "time_stamp": "2024-03-19T17:02:32.000Z"
+    },
+    {
+        "id": 2,
+        "user_id": 1001,
+        "comment": "I did as well.",
+        "parent_id": 1,
+        "time_stamp": "2024-03-19T17:03:38.000Z"
+    }
+];
+
 // Unit test suite for GET /users/getUsers endpoint
 describe("GET /users/getUsers", () =>{
+
+    // Gets the full list of current registered users
     test('responds to /users/getUsers', async () => {
         const res = await request(app).get('/users/getUsers');
         expect(res.statusCode).toBe(200);
         expect(res.body).toStrictEqual(exampleUserList);
     });
+
 });
 
 
@@ -78,3 +98,52 @@ describe("PUT /users/changeEmail", () => {
 });
 
 
+// Unit test suite for POST /users/registerUser endpoint
+describe("POST /users/registerUser", () => {
+
+    // Register the new user
+    test('responds to /users/registerUser', async () => {
+        // Add test implementation here
+    });
+
+})
+
+
+// Unit test suite for DELETE /users/removeUser endpoint
+describe("DELETE /users/removeUser/:username", () => {
+
+    // Success: Remove valid user
+    test('responds to /users/removeUser/:username', async () => {
+        // Add test implementation here
+    });
+
+    // Failure: Remove invalid user
+    test('responds to /users/removeUser/:username', async () => {
+        // Add test implementation here
+    });
+
+});
+
+
+// Unit test suite for GET /comments/getComments endpoint
+describe("GET /comments/getComments", () => {
+
+    // Gets the full list of comments that have been made on the site
+    test('responds to /comments/getComments', async () => {
+        const res = await request(app).get('/comments/getComments');
+        expect(res.statusCode).toBe(200);
+        expect(res.body).toStrictEqual(exampleCommentsList);
+    });
+
+});
+
+
+// Unit test suite for POST /tickets/purchaseTickets endpoint
+describe("POST /tickets/purchaseTickets", () => {
+
+    // Adds the park tickets to the users account
+    test('responds to /tickets/purchaseTickets', async () => {
+        // Add test implementation here
+    });
+
+});
