@@ -1,6 +1,7 @@
 Database last updated: 3/25/2024 - 10:39pm
 
-Code for the MySQL database 
+Code for the MySQL database
+
 Creates 7 tables: 
 Attractions: the rides and activities avaliable at the park 
 Cart: used for the store page to show the items the user has picked out to purchase 
