@@ -22,18 +22,20 @@ app.get('/comments', (req, res) => {
 })
 
 // simple display cart items for 1000
-app.get('/getCartItemsFromSQL', async (req, res) => {
+app.get('/cart/getItems/:username', async (req, res) => {
     try {
-        const cart = await getCartItems(1000); // Fetch comments from the database
-        res.json(cart); // Send comments as JSON response
+        const username = req.params.username;
+        const cart = await getCartItems(username);
+        res.json(cart);
     } catch (error) {
         console.error(err);
         res.status(500).send('Something went wrong');
     }
 });
-app.get('/cart', (req, res) => {
+/* Working on now
+app.get('/cart/:username', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/cart.html'))
-}) 
+}) */
 
 // simple register user
 app.post('/users/registerUser', async (req, res) => { 
@@ -109,7 +111,7 @@ app.post('/login', async (req, res) => {
         const success = await verifyLogin(username, password);
         if (success) {
             // If login successful, get user information
-            const user = await getUser(username);
+            const user = await getUserByUsername(username);
             res.json({ success: true, user: user });
         } else {
             res.json({ success: false });
@@ -125,7 +127,7 @@ app.get('/account/:username', (req, res) => {
 app.get('/account/userinfo/:username', async (req,res) => {
     try {
         const username = req.params.username;
-        const user = await getUser(username);
+        const user = await getUserByUsername(username);
         res.json(user);
     } catch (err) {
         console.error(err);

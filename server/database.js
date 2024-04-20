@@ -24,7 +24,7 @@ async function getUser(id) {
 } // getUser
 
 // returns user info for given username
-async function getUser(username) {
+async function getUserByUsername(username) {
     const [rows] = await pool.query("SELECT * FROM users WHERE username = ?", [username]) 
     return rows
 } // getUser
@@ -50,16 +50,6 @@ async function createUser(username, lastname, firstname, email, password) {
     }
 } // createNote
 
-async function verifyLogin(username, password) {
-    const [result] = await pool.query("SELECT password FROM users WHERE username = ?", [username]);
-    if (result && result.length > 0 && result[0].password === password) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-
 async function registerUser(username, lastname, firstname, email, password) {
     // console.log("Received values for registration: in database registerUser: ");
     // console.log("Username:", username);
@@ -78,6 +68,15 @@ async function registerUser(username, lastname, firstname, email, password) {
     const result = await createUser(username, lastname, firstname, email, password)
     return result
 } // registerUser   
+
+async function verifyLogin(username, password) {
+    const [result] = await pool.query("SELECT password FROM users WHERE username = ?", [username]);
+    if (result && result.length > 0 && result[0].password === password) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
 async function getComments() {
     const result = await pool.query("SELECT * FROM comments")
@@ -115,8 +114,10 @@ async function purchaseTicket(userId, ticketType, dateValid) {
 } // purchaseTicket
 
 // returns cart items of user given id
-async function getCartItems(id) {
-    const [rows] = await pool.query("SELECT * FROM cart WHERE user_id = ?", [id])
+async function getCartItems(username) {
+    const id = await getId(username);
+    console.log("ID: ", id.id);
+    const [rows] = await pool.query("SELECT * FROM cart WHERE user_id = ?", [id.id])
     return rows
 } // getCartItems
 
