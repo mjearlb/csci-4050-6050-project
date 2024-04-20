@@ -7,14 +7,23 @@
 </head>
 <body>
     <h1>Comments</h1>
+    <p>Total Comments: <span id="comment-count">0</span></p>
     <ul id="comments-list"></ul>
 
     <script>
+        // Function to update the comment count
+        function updateCommentCount(count) {
+            const commentCountSpan = document.getElementById('comment-count');
+            commentCountSpan.textContent = count;
+        }
+
         // Fetch comments from server and render them
         async function fetchComments() {
             try {
                 const response = await fetch('/getCommentsFromSQL');
                 const comments = await response.json();
+
+                updateCommentCount(comments.length); // Update comment count
 
                 const commentsList = document.getElementById('comments-list');
                 comments.forEach(comment => {
