@@ -3,11 +3,11 @@ const app = express()
 const PORT = process.env.PORT || 3000;
 const path = require('path')
 
-const {getUsers, getUser, createUser, getComments, changeEmail, purchaseTicket, registerUser, removeUser, getCartItems} = require('./database.js');
+const {getUsers, getUser, createUser, getComments, changeEmail, purchaseTicket, registerUser, removeUser, getCartItems, verifyLogin} = require('./database.js');
 
 app.use(express.json());
 
-
+// simple display comments
 app.get('/getCommentsFromSQL', async (req, res) => {
     try {
         const comments = await getComments(); // Fetch comments from the database
@@ -17,13 +17,11 @@ app.get('/getCommentsFromSQL', async (req, res) => {
         res.status(500).send('Something went wrong');
     }
 });
-
 app.get('/comments', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/comments.html'))
 })
 
-
-
+// simple display cart items for 1000
 app.get('/getCartItemsFromSQL', async (req, res) => {
     try {
         const cart = await getCartItems(1000); // Fetch comments from the database
@@ -33,31 +31,12 @@ app.get('/getCartItemsFromSQL', async (req, res) => {
         res.status(500).send('Something went wrong');
     }
 });
-
 app.get('/cart', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/cart.html'))
 }) 
 
-
-
-
-
-// Calls the getUser() DB method
-// returns the user with the specified ID
-app.get('/users/getUser/:id', async (req,res) => {
-    try {
-        const id = req.params.id;
-        const user = await getUser(id);
-        res.json(user);
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Something went wrong');
-    }
-})
-
-// Calls the registerUser() DB method
-// registers a user account
-app.post('  ', async (req, res) => { 
+// simple register user
+app.post('/users/registerUser', async (req, res) => { 
     try {
         const { username, lastname, firstname, email, password } = req.body;
         const result = await registerUser(username, lastname, firstname, email, password);
@@ -71,11 +50,11 @@ app.post('  ', async (req, res) => {
         res.status(500).send('Something went wrong');
     }
 })
-
 app.get('/register', async (req, res) => {
     res.sendFile(path.join(__dirname, 'public/register.html'))
 })
 
+// simple delete user
 app.post('/users/deleteUser', async (req, res) => { 
     try {
         const {username} = req.body;
@@ -91,10 +70,42 @@ app.post('/users/deleteUser', async (req, res) => {
         res.status(500).send('Something went wrong');
     }
 })
-
 app.get('/deleteUser', async (req, res) => {
     res.sendFile(path.join(__dirname, 'public/deleteUser.html'))
 })
+
+// simple verify login
+app.get('/verifyLogin', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/verifyLogin.html'))
+}) 
+app.post('/verifyLogin', async (req, res) => {
+    const { username, password } = req.body;
+    try {
+        console.log("Username: ", username);
+        console.log("Password: ", password);
+        const success = await verifyLogin(username, password);
+        if (success) {
+            // If login successful, get user information
+            const user = await getUser(username);
+            res.json({ success: true, user: user });
+        } else {
+            res.json({ success: false });
+        }
+    } catch (error) {
+        console.error('Error verifying login:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+});
+
+
+
+
+
+
+
+
+
+
 
 // Calls the getUser() DB method
 // returns the user with the specified ID
@@ -109,12 +120,6 @@ app.get('/users/getUser/:id', async (req,res) => {
     }
 })
 
-
-
-
- 
-
-
 app.get('/users', async (req, res) => {
     try {
     	const users = await getUsers();
@@ -127,18 +132,6 @@ app.get('/users', async (req, res) => {
 
 app.get('/date', (req, res) => {
     res.send(`<h1>${Date()}</h1>`)
-})
-
-app.get('/cart', async (req, res) => {
-    try {
-        const cart = await getCartItems(1000)
-        // res.json(cart)
-        res.sendFile(path.join(__dirname, "public/cart.html"))
-        // res.sendFile(path.join(__dirname, "public/cart.html"), {cart})
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Something went wrong');
-    }
 })
 
 app.get('/index', (req, res) => {

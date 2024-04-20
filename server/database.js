@@ -44,6 +44,16 @@ async function createUser(username, lastname, firstname, email, password) {
     }
 } // createNote
 
+async function verifyLogin(username, password) {
+    const [result] = await pool.query("SELECT password FROM users WHERE username = ?", [username]);
+    if (result && result.length > 0 && result[0].password === password) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
 async function registerUser(username, lastname, firstname, email, password) {
     // console.log("Received values for registration: in database registerUser: ");
     // console.log("Username:", username);
@@ -112,7 +122,8 @@ module.exports = {
     changeEmail, 
     purchaseTicket,
     getCartItems,
-    removeUser
+    removeUser, 
+    verifyLogin
 };
 
 // testing
