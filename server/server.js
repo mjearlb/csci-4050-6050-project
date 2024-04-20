@@ -133,6 +133,10 @@ app.get('/account/userinfo/:username', async (req,res) => {
     }
 })
 
+// simple example of header
+app.get('/homepage', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/homepage.html'))
+}) 
 
 
 
