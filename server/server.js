@@ -97,6 +97,41 @@ app.post('/verifyLogin', async (req, res) => {
     }
 });
 
+// simple login to acocunt screen
+app.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/login.html'))
+}) 
+app.post('/login', async (req, res) => {
+    const { username, password } = req.body;
+    try {
+        console.log("Username: ", username);
+        console.log("Password: ", password);
+        const success = await verifyLogin(username, password);
+        if (success) {
+            // If login successful, get user information
+            const user = await getUser(username);
+            res.json({ success: true, user: user });
+        } else {
+            res.json({ success: false });
+        }
+    } catch (error) {
+        console.error('Error verifying login:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+});
+app.get('/account/:username', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/account.html'))
+}) 
+app.get('/account/userinfo/:username', async (req,res) => {
+    try {
+        const username = req.params.username;
+        const user = await getUser(username);
+        res.json(user);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Something went wrong');
+    }
+})
 
 
 

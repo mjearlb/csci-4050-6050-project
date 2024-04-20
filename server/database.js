@@ -15,13 +15,19 @@ async function getUsers() {
     const rows = result[0]
     // or: const [rows] = await pool.query("SELECT * FROM users")
     return rows
-} // getNotes
+} // getUsers
 
 // returns user info for given id
 async function getUser(id) {
     const [rows] = await pool.query("SELECT * FROM users WHERE id = ?", [id]) 
     return rows
-} // getNote
+} // getUser
+
+// returns user info for given username
+async function getUser(username) {
+    const [rows] = await pool.query("SELECT * FROM users WHERE username = ?", [username]) 
+    return rows
+} // getUser
 
 // returns username of user given id
 async function getUsername(id) {

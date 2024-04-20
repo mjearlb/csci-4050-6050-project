@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Account</title>
+    <style>
+        /* Basic CSS for styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        h2 {
+            margin-top: 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>User Account</h2>
+        <table>
+            <tr>
+                <th>Field</th>
+                <th>Value</th>
+            </tr>
+            <tr>
+                <td>Username</td>
+                <td id="username"></td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td id="email"></td>
+            </tr>
+            <tr>
+                <td>Password</td>
+                <td id="password"></td>
+            </tr>
+            <tr>
+                <td>First Name</td>
+                <td id="firstname"></td>
+            </tr>
+            <tr>
+                <td>Last Name</td>
+                <td id="lastname"></td>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Function to fetch user data from server and populate the HTML table
+            async function fetchUserData(username) {
+                try {
+                    const response = await fetch(`/account/userinfo/${username}`);
+                    const userDataArray = await response.json();
+                    // Check if userDataArray is not empty
+                    if (userDataArray.length > 0) {
+                        const userData = userDataArray[0]; // Extract the first object from the array
+                        document.getElementById('username').innerText = userData.username;
+                        document.getElementById('email').innerText = userData.email;
+                        document.getElementById('password').innerText = userData.password;
+                        document.getElementById('firstname').innerText = userData.first_name;
+                        document.getElementById('lastname').innerText = userData.last_name;
+                    } else {
+                        alert('User data not found.');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('An error occurred while fetching user data.');
+                }
+            }
+    
+            // Extract username from the URL path and fetch user data
+            const username = window.location.pathname.split('/').pop();
+            if (username) {
+                fetchUserData(username);
+            } else {
+                alert('Username not provided in URL.');
+            }
+        });
+    </script>
+          
+</body>
+</html>
