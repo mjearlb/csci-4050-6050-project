@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration Form</title>
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h2>User Registration Form</h2>
+    <form action="http://localhost:3000/register" method="post" onsubmit="validateForm(event)">
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username" required><br>
+        <label for="lastname">Last Name:</label><br>
+        <input type="text" id="lastname" name="lastname" required><br>
+        <label for="firstname">First Name:</label><br>
+        <input type="text" id="firstname" name="firstname" required><br>
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email" required><br>
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password" required><br><br>
+        <input type="submit" value="Submit">
+    </form>
+
+    <script>
+        function validateForm(event) {
+            event.preventDefault(); // Prevent default form submission
+            var username = document.getElementById("username").value;
+            var lastname = document.getElementById("lastname").value;
+            var firstname = document.getElementById("firstname").value;
+            var email = document.getElementById("email").value;
+            var password = document.getElementById("password").value;
+            var isValid = true;
+    
+            // Validation code...
+    
+            if (isValid) {
+                // If all fields are valid, submit the form asynchronously
+                submitForm(username, lastname, firstname, email, password);
+            }
+        }
+    
+        async function submitForm(username, lastname, firstname, email, password) {
+            try {
+                const response = await fetch('http://localhost:3000/users/registerUser', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, lastname, firstname, email, password })
+                });
+                if (response.ok) {
+                    const data = await response.text();
+                    console.log(data); // Log server response
+                    // Optionally, you can redirect the user or show a success message here
+                } else {
+                    throw new Error('Failed to register user');
+                }
+            } catch (error) {
+                console.error(error);
+                // Handle errors, show error message to the user, etc.
+            }
+        }
+    </script>
+    
+</body>
+</html>

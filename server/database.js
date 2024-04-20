@@ -29,12 +29,6 @@ async function getUsername(id) {
     return rows
 } // getUsername
 
-// returns cart items of user given id
-async function getCartItems(id) {
-    const [rows] = await pool.query("SELECT * FROM cart WHERE user_id = ?", [id])
-    return rows
-} // getCart
-
 // 
 async function getId(username) {
     const [rows] = await pool.query("SELECT id FROM users WHERE username = ?", [username]) 
@@ -51,6 +45,12 @@ async function createUser(username, lastname, firstname, email, password) {
 } // createNote
 
 async function registerUser(username, lastname, firstname, email, password) {
+    console.log("Received values for registration: in database registerUser: ");
+    console.log("Username:", username);
+    console.log("Last Name:", lastname);
+    console.log("First Name:", firstname);
+    console.log("Email:", email);
+    console.log("Password:", password);
     const [emailCheck] = await pool.query("SELECT * FROM users WHERE email = ?", [email])
     const [usernameCheck] = await pool.query("SELECT * FROM users WHERE username = ?", [username])
     if (emailCheck.length > 0) {
@@ -97,6 +97,12 @@ async function purchaseTicket(userId, ticketType, dateValid) {
         return false; // No rows were updated, ticket purchase failed
     }
 } // purchaseTicket
+
+// returns cart items of user given id
+async function getCartItems(id) {
+    const [rows] = await pool.query("SELECT * FROM cart WHERE user_id = ?", [id])
+    return rows
+} // getCartItems
 
 module.exports = {
     getUsers,
