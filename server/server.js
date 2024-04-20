@@ -23,15 +23,33 @@ app.get('/login', async (req, res) => {
     res.send("login here:")
 })
 
+// Define route to handle fetching comments
+app.get('/getCommentsFromSQL', async (req, res) => {
+    try {
+        const comments = await getComments(); // Fetch comments from the database
+        res.json(comments); // Send comments as JSON response
+    } catch (error) {
+        console.error(err);
+        res.status(500).send('Something went wrong');
+    }
+});
+
+app.get('/comments', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/comments.html'))
+})
+
+
+/**
 app.get('/comments', async (req, res) => {
     try {
-        const users = await getComments();
-        res.json(users);
+        const comments = await getComments();
+        res.sendFile(__dirname + '/public/comments.html');
+//        res.json(comments);
     } catch (err) {
         console.error(err);
         res.status(500).send('Something went wrong');
     }
-})
+})*/
 
 app.get('/cart', async (req, res) => {
     try {

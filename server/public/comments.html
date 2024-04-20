@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comments</title>
+</head>
+<body>
+    <h1>Comments</h1>
+    <ul id="comments-list"></ul>
+
+    <script>
+        // Fetch comments from server and render them
+        async function fetchComments() {
+            try {
+                const response = await fetch('/getCommentsFromSQL');
+                const comments = await response.json();
+
+                const commentsList = document.getElementById('comments-list');
+                comments.forEach(comment => {
+                    const li = document.createElement('li');
+                    li.textContent = comment.comment;
+                    commentsList.appendChild(li);
+                });
+            } catch (error) {
+                console.error('Error fetching comments:', error);
+            }
+        }
+
+        // Call fetchComments when the page loads
+        window.onload = fetchComments;
+    </script>
+</body>
+</html>
