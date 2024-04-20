@@ -45,12 +45,12 @@ async function createUser(username, lastname, firstname, email, password) {
 } // createNote
 
 async function registerUser(username, lastname, firstname, email, password) {
-    console.log("Received values for registration: in database registerUser: ");
-    console.log("Username:", username);
-    console.log("Last Name:", lastname);
-    console.log("First Name:", firstname);
-    console.log("Email:", email);
-    console.log("Password:", password);
+    // console.log("Received values for registration: in database registerUser: ");
+    // console.log("Username:", username);
+    // console.log("Last Name:", lastname);
+    // console.log("First Name:", firstname);
+    // console.log("Email:", email);
+    // console.log("Password:", password);
     const [emailCheck] = await pool.query("SELECT * FROM users WHERE email = ?", [email])
     const [usernameCheck] = await pool.query("SELECT * FROM users WHERE username = ?", [username])
     if (emailCheck.length > 0) {
@@ -111,7 +111,8 @@ module.exports = {
     getComments, 
     changeEmail, 
     purchaseTicket,
-    getCartItems
+    getCartItems,
+    removeUser
 };
 
 // testing

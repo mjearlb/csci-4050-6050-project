@@ -3,7 +3,7 @@ const app = express()
 const PORT = process.env.PORT || 3000;
 const path = require('path')
 
-const {getUsers, getUser, createUser, getComments, changeEmail, purchaseTicket, registerUser, getCartItems} = require('./database.js');
+const {getUsers, getUser, createUser, getComments, changeEmail, purchaseTicket, registerUser, removeUser, getCartItems} = require('./database.js');
 
 app.use(express.json());
 
@@ -57,18 +57,9 @@ app.get('/users/getUser/:id', async (req,res) => {
 
 // Calls the registerUser() DB method
 // registers a user account
-app.post('/users/registerUser', async (req, res) => { 
+app.post('  ', async (req, res) => { 
     try {
         const { username, lastname, firstname, email, password } = req.body;
-        //if (!username || !lastname || !firstname || !email || !password) {
-        //    return res.status(400).json({ error: 'All fields are required.' });
-        //}
-        console.log("Received values for registration: server app.post");
-        console.log("Username:", username);
-    console.log("Last Name:", lastname);
-    console.log("First Name:", firstname);
-    console.log("Email:", email);
-    console.log("Password:", password);
         const result = await registerUser(username, lastname, firstname, email, password);
         if (result) {
             res.status(200).send('User successfully registered');
@@ -83,6 +74,26 @@ app.post('/users/registerUser', async (req, res) => {
 
 app.get('/register', async (req, res) => {
     res.sendFile(path.join(__dirname, 'public/register.html'))
+})
+
+app.post('/users/deleteUser', async (req, res) => { 
+    try {
+        const {username} = req.body;
+        console.log("Username:", username);
+        const result = await removeUser(username); //(username, lastname, firstname, email, password);
+        if (result) {
+            res.status(200).send('User successfully registered');
+        } else {
+            res.status(500).send('User registration failure');
+        } 
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Something went wrong');
+    }
+})
+
+app.get('/deleteUser', async (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/deleteUser.html'))
 })
 
 // Calls the getUser() DB method
