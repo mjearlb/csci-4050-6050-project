@@ -129,7 +129,6 @@ app.get('/admin/cart/removeItem/:cartId', async (req, res) => {
 app.get('/admin/merchandise/getItems', async (req, res) => {
     try {
         const merchandise = await getAllMerchandise();
-        console.log("test");
         res.json(merchandise);
     } catch (error) {
         console.error(error);

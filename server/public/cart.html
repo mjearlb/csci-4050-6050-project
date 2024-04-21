@@ -113,6 +113,7 @@
         const cartItemsContainer = document.getElementById("cart-items");
         cartItemsContainer.innerHTML = "";
         let totalPrice = 0;
+        let itemNumber = 0;
         if (items.length === 0) {
             cartItemsContainer.innerHTML = "<p>Your cart is empty.</p>";
         } else {
@@ -129,6 +130,7 @@
                     </div>
                 `;
                 totalPrice += merchandise[0].price * item.quantity;
+                itemNumber += item.quantity;
                 cartItemsContainer.innerHTML += itemHTML;
             }
         }
@@ -136,7 +138,7 @@
         totalPriceElement.innerHTML = `<p>Total Price: $${totalPrice.toFixed(2)}
             <button onclick="purchaseCartItems()">Purchase</button></p>`;;
         const itemCountElement = document.getElementById("cart-counter");
-        itemCountElement.textContent = `Total Items: ${items.length}`;
+        itemCountElement.textContent = `Total Items: ${itemNumber}`;
     };
     fetchCartItems();
 </script>
