@@ -1,10 +1,92 @@
 const express = require('express');
+const path = require('path')
 const app = express()
 const PORT = process.env.PORT || 3000;
 
-const {getUsers, getUser, createUser, getComments, changeEmail, purchaseTicket, registerUser} = require('./database.js');
+const {getUsers, getUser, getUserByUsername, createUser, getComments, changeEmail, purchaseTicket, registerUser, verifyLogin} = require('./database.js');
 
 app.use(express.json());
+
+// Redirect to login page
+app.get('/', (req, res) => {
+    res.redirect('/login');
+});
+
+// Login page
+app.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/login.html'))
+});
+
+// Home page
+app.get('/home/:username', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/home.html'))
+}) 
+
+// Tickets page
+app.get('/tickets/:username', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/tickets.html'))
+}) 
+
+// Community page
+app.get('/community/:username', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/community.html'))
+}) 
+
+// Shop page
+app.get('/shop/:username', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/shop.html'))
+}) 
+
+// Cart page
+app.get('/cart/:username', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/Cart.html'))
+}) 
+
+// Account page
+app.get('/account/:username', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/account.html'))
+}) 
+
+
+// Admin commands used to return database items
+// Admin use to verify login
+app.post('/admin/verifyLogin', async (req, res) => {
+    const { username, password } = req.body;
+    try {
+        console.log("Username: ", username);
+        console.log("Password: ", password);
+        const success = await verifyLogin(username, password);
+        if (success) {
+            // If login successful, get user information
+            const user = await getUser(username);
+            res.json({ success: true, user: user });
+        } else {
+            res.json({ success: false });
+        }
+    } catch (error) {
+        console.error('Error verifying login:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+});
+
+// Admin use to get user info from username
+app.get('/admin/getUser/username/:username', async (req,res) => {
+    try {
+        const username = req.params.username;
+        const user = await getUserByUsername(username);
+        res.json(user);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Something went wrong');
+    }
+})
+
+
+
+
+
+
+
 
 // Calls the getUsers() DB method
 // returns all of the users

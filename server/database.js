@@ -23,6 +23,12 @@ async function getUser(id) {
     return rows
 } // getNote
 
+// returns user info for given username
+async function getUserByUsername(username) {
+    const [rows] = await pool.query("SELECT * FROM users WHERE username = ?", [username]) 
+    return rows
+} // getUser
+
 // returns username of user given id
 async function getUsername(id) {
     const [rows] = await pool.query("SELECT username FROM users WHERE id = ?", [id]) 
@@ -92,13 +98,24 @@ async function purchaseTicket(userId, ticketType, dateValid) {
     }
 } // purchaseTicket
 
+async function verifyLogin(username, password) {
+    const [result] = await pool.query("SELECT password FROM users WHERE username = ?", [username]);
+    if (result && result.length > 0 && result[0].password === password) {
+        return true;
+    } else {
+        return false;
+    }
+} // verifyLogin
+
 module.exports = {
     getUsers,
     getUser,
     registerUser,
     getComments, 
     changeEmail, 
-    purchaseTicket
+    purchaseTicket, 
+    verifyLogin, 
+    getUserByUsername
 };
 
 // testing

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <h2>Login</h2>
+    <form id="loginForm">
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username"><br>
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password"><br><br>
+        <button type="submit">Login</button>
+    </form>
+    <p id="message"></p>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('loginForm').addEventListener('submit', async (event) => {
+                event.preventDefault();
+                const formData = new FormData(document.getElementById('loginForm'));
+                const username = formData.get('username');
+                const password = formData.get('password');
+
+                try {
+                    const response = await fetch('/admin/verifyLogin', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ username, password })
+                    });
+                    const data = await response.json();
+                    if (data.success) {
+                        // Redirect to account page on successful login
+                        window.location.href = `/home/${username}`;
+                    } else {
+                        document.getElementById('message').innerText = 'Login failed';
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    //deleteForErrorDisplay document.getElementById('message').innerText = 'An error occurred. Please try again later.';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
