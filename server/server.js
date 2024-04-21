@@ -81,8 +81,6 @@ app.get('/admin/cart/removeItem/:cartId', async (req, res) => {
     try {
         const cart_id = req.params.cartId;
         const result = await removeCartItem(cart_id);
-        console.log("cart_id: ", cart_id);
-        console.log("result: ", result);
         if (result) {
             res.status(200).send('Item successfully deleted');
         } else {

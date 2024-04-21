@@ -118,7 +118,7 @@ async function getCart(username) {
 async function addCartItem(username, item_id, quantity) {
     const user_id = await getId(username);
     const time_added = new Date().toISOString().slice(0, 19).replace('T', ' ');
-    const [result] = await pool.query("INSERT INTO cart (user_id, item_id, quanitity, time_added, is_active) VALUES (?, ?, ?, ?, ?)", [user_id.id, item_id, quantity, time_added, 1]);
+    const [result] = await pool.query("INSERT INTO cart (user_id, item_id, quantity, time_added, is_active) VALUES (?, ?, ?, ?, ?)", [user_id.id, item_id, quantity, time_added, 1]);
     if (result.affectedRows > 0) {
         return true; // user was created
     } else {
