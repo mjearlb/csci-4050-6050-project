@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cart</title>
+    <title>Shopping Cart</title>
     <style>
         header {
             background-color: #333;
@@ -104,7 +104,7 @@
     };
 
     const fetchMerchandiseInfo = async (itemId) => {
-        const response = await fetch(`/admin/cart/getMerchandise/${itemId}`);
+        const response = await fetch(`/admin/merchandise/getItem/${itemId}`);
         const merchandise = await response.json();
         return merchandise;
     };
@@ -133,10 +133,8 @@
             }
         }
         const totalPriceElement = document.getElementById("total-price");
-        totalPriceElement.innerHTML = `
-        <p>Total Price: $${totalPrice.toFixed(2)}
-        <button onclick="purchaseCartItems()">Purchase</button></p>
-    `;;
+        totalPriceElement.innerHTML = `<p>Total Price: $${totalPrice.toFixed(2)}
+            <button onclick="purchaseCartItems()">Purchase</button></p>`;;
         const itemCountElement = document.getElementById("cart-counter");
         itemCountElement.textContent = `Total Items: ${items.length}`;
     };

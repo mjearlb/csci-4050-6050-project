@@ -3,7 +3,7 @@ const path = require('path')
 const app = express()
 const PORT = process.env.PORT || 3000;
 
-const {getUsers, getUser, getUserByUsername, createUser, getComments, changeEmail, purchaseTicket, registerUser, verifyLogin, getCart, getMerchandise, addCartItem, removeCartItem} = require('./database.js');
+const {getUsers, getUser, getUserByUsername, createUser, getComments, changeEmail, purchaseTicket, registerUser, verifyLogin, getCart, addCartItem, removeCartItem, getMerchandise, getAllMerchandise} = require('./database.js');
 
 app.use(express.json());
 
@@ -41,57 +41,6 @@ app.get('/shop/:username', (req, res) => {
 app.get('/cart/:username', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/Cart.html'))
 }) 
-app.get('/admin/cart/getItems/:username', async (req, res) => {
-    try {
-        const username = req.params.username;
-        const cart = await getCart(username);
-        res.json(cart);
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Something went wrong');
-    }
-});
-app.get('/admin/cart/getMerchandise/:id', async (req, res) => {
-    try {
-        const id = req.params.id;
-        const merchandise = await getMerchandise(id);
-        res.json(merchandise);
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Something went wrong');
-    }
-});
-app.get('/admin/cart/addItem/:username/:itemId/:quantity', async (req, res) => {
-    try {
-        const username = req.params.username;
-        const item_id = req.params.itemId;
-        const quantity = req.params.quantity;
-        const result = await addCartItem(username, item_id, quantity);
-        if (result) {
-            res.status(200).send('Item successfully registered');
-        } else {
-            res.status(500).send('Item registration failure');
-        }
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Something went wrong');
-    }
-});
-app.get('/admin/cart/removeItem/:cartId', async (req, res) => {
-    try {
-        const cart_id = req.params.cartId;
-        const result = await removeCartItem(cart_id);
-        if (result) {
-            res.status(200).send('Item successfully deleted');
-        } else {
-            res.status(500).send('Item failed to be deleted');
-        }
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Something went wrong');
-    }
-});
-
 
 // Account page
 app.get('/account/:username', (req, res) => {
@@ -129,6 +78,76 @@ app.get('/admin/getUser/username/:username', async (req,res) => {
         res.status(500).send('Something went wrong');
     }
 })
+
+// Admin use to get all items for username
+app.get('/admin/cart/getItems/:username', async (req, res) => {
+    try {
+        const username = req.params.username;
+        const cart = await getCart(username);
+        res.json(cart);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Something went wrong');
+    }
+});
+
+// Admin use to add item to cart
+app.get('/admin/cart/addItem/:username/:itemId/:quantity', async (req, res) => {
+    try {
+        const username = req.params.username;
+        const item_id = req.params.itemId;
+        const quantity = req.params.quantity;
+        const result = await addCartItem(username, item_id, quantity);
+        if (result) {
+            res.status(200).send('Item successfully registered');
+        } else {
+            res.status(500).send('Item registration failure');
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Something went wrong');
+    }
+});
+
+// Admin use to remove item from cart
+app.get('/admin/cart/removeItem/:cartId', async (req, res) => {
+    try {
+        const cart_id = req.params.cartId;
+        const result = await removeCartItem(cart_id);
+        if (result) {
+            res.status(200).send('Item successfully deleted');
+        } else {
+            res.status(500).send('Item failed to be deleted');
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Something went wrong');
+    }
+});
+
+// Admin use to get all items for username
+app.get('/admin/merchandise/getItems', async (req, res) => {
+    try {
+        const merchandise = await getAllMerchandise();
+        console.log("test");
+        res.json(merchandise);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Something went wrong');
+    }
+});
+
+// Admin use to get all merchandise under id
+app.get('/admin/merchandise/getItem/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        const merchandise = await getMerchandise(id);
+        res.json(merchandise);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Something went wrong');
+    }
+});
 
 
 

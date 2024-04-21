@@ -115,6 +115,7 @@ async function getCart(username) {
     return rows
 } // getCartItems
 
+// adds item to cart
 async function addCartItem(username, item_id, quantity) {
     const user_id = await getId(username);
     const time_added = new Date().toISOString().slice(0, 19).replace('T', ' ');
@@ -126,6 +127,7 @@ async function addCartItem(username, item_id, quantity) {
     }
 } // addCartItem
 
+// removes item from cart
 async function removeCartItem(cart_id) {
     const [result] = await pool.query("DELETE FROM cart WHERE cart_id = ?", [cart_id])
     if (result.affectedRows > 0) {
@@ -134,6 +136,13 @@ async function removeCartItem(cart_id) {
         return false; // No rows were updated, user deletion failed
     }
 } // removeCartItem
+
+// Returns all merchandise
+async function getAllMerchandise() {
+    const result = await pool.query("SELECT * FROM merchandise")
+    const rows = result[0]
+    return rows
+} // getMerchandise
 
 // Returns merchandise for given id
 async function getMerchandise(id) {
@@ -151,9 +160,10 @@ module.exports = {
     verifyLogin, 
     getUserByUsername, 
     getCart,
-    getMerchandise,
     addCartItem,
-    removeCartItem
+    removeCartItem,
+    getMerchandise,
+    getAllMerchandise
 };
 
 // testing
