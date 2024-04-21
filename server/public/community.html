@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Community</title>
     <style>
-        /* Style for the header */
         header {
             background-color: #333;
             color: #fff;
@@ -13,7 +12,6 @@
             text-align: center;
         }
         
-        /* Style for the buttons */
         .header-buttons {
             display: inline-block;
             margin: 0 10px;
@@ -34,7 +32,6 @@
 <body>
 
 <header>
-    <!-- Buttons in the header -->
     <a href="#" class="header-buttons" id="homeButton">Home</a>
     <a href="#" class="header-buttons" id="ticketsButton">Tickets</a>
     <a href="#" class="header-buttons" id="communityButton">Community</a>
@@ -51,14 +48,12 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // Function to fetch user data from server and populate the HTML table
         async function fetchUserData(username) {
             try {
                 const response = await fetch(`/admin/getUser/username/${username}`);
                 const userDataArray = await response.json();
-                // Check if userDataArray is not empty
                 if (userDataArray.length > 0) {
-                    const userData = userDataArray[0]; // Extract the first object from the array
+                    const userData = userDataArray[0];
                     document.getElementById('welcomeMessage').innerText = `Welcome to our Community page, ${userData.username}!`;
                 } else {
                     window.location.href = `/`;
@@ -69,7 +64,6 @@
             }
         }
 
-        // Extract username from the URL path and fetch user data
         const username = window.location.pathname.split('/').pop();
         if (username) {
             fetchUserData(username);

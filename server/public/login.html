@@ -34,7 +34,6 @@
                     });
                     const data = await response.json();
                     if (data.success) {
-                        // Redirect to account page on successful login
                         window.location.href = `/home/${username}`;
                     } else {
                         document.getElementById('message').innerText = 'Login failed';

@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cart</title>
     <style>
-        /* Style for the header */
         header {
             background-color: #333;
             color: #fff;
@@ -13,7 +12,6 @@
             text-align: center;
         }
         
-        /* Style for the buttons */
         .header-buttons {
             display: inline-block;
             margin: 0 10px;
@@ -34,7 +32,6 @@
 <body>
 
 <header>
-    <!-- Buttons in the header -->
     <a href="#" class="header-buttons" id="homeButton">Home</a>
     <a href="#" class="header-buttons" id="ticketsButton">Tickets</a>
     <a href="#" class="header-buttons" id="communityButton">Community</a>
@@ -45,21 +42,21 @@
 </header>
 
 <div>
-    <h1 id="welcomeMessage">Welcome to your cart!</h1>
-    <p>Add cart functionality to this page</p>
+    <h1 id="welcomeMessage">Your Cart: </h1>
 </div>
+
+<div> <h2 id="cart-counter"> </h2> </div>
+<div id="cart-items"></div> 
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // Function to fetch user data from server and populate the HTML table
         async function fetchUserData(username) {
             try {
                 const response = await fetch(`/admin/getUser/username/${username}`);
                 const userDataArray = await response.json();
-                // Check if userDataArray is not empty
                 if (userDataArray.length > 0) {
-                    const userData = userDataArray[0]; // Extract the first object from the array
-                    document.getElementById('welcomeMessage').innerText = `Welcome to your cart, ${userData.username}!`;
+                    const userData = userDataArray[0];
+                    document.getElementById('welcomeMessage').innerText = `${userData.username}'s Cart`;
                 } else {
                     window.location.href = `/`;
                 }
@@ -69,7 +66,6 @@
             }
         }
 
-        // Extract username from the URL path and fetch user data
         const username = window.location.pathname.split('/').pop();
         if (username) {
             fetchUserData(username);
@@ -83,6 +79,53 @@
             alert('Username not provided in URL.');
         }
     });
+
+    const username = window.location.pathname.split('/').pop();
+
+    const removeItem = async (cartId) => {
+        await fetch(`/admin/cart/removeItem/${cartId}`);
+        await fetchCartItems();
+    };
+
+    const fetchCartItems = async () => {
+        const response = await fetch(`/admin/cart/getItems/${username}`);
+        const items = await response.json();           
+        renderCartItems(items);
+    };
+
+    const fetchMerchandiseInfo = async (itemId) => {
+        const response = await fetch(`/admin/cart/getMerchandise/${itemId}`);
+        const merchandise = await response.json();
+        return merchandise;
+    };
+
+    const renderCartItems = async (items) => {
+        const cartItemsContainer = document.getElementById("cart-items");
+        cartItemsContainer.innerHTML = "";
+        if (items.length === 0) {
+            cartItemsContainer.innerHTML = "<p>Your cart is empty.</p>";
+        } else {
+            for (const item of items) {
+                const merchandise = await fetchMerchandiseInfo(item.item_id);
+                const itemHTML = `
+                <div class="cart-item">
+                    <div>
+                        <h3>Item Name: ${merchandise[0].item_name}</h3>
+                        <p>Price: $${merchandise[0].price}</p>
+                        <p>Quantity: ${item.quanitity}</p>
+                        <p>Time Added: ${new Date(item.time_added).toLocaleString()}</p>
+                        <p>Active: ${item.is_active ? 'Yes' : 'No'}</p>
+                        </div>
+                        <button onclick="removeItem(${item.cart_id})">Delete</button>
+                    </div>
+                `;
+                cartItemsContainer.innerHTML += itemHTML;
+            }
+        }
+        const itemCountElement = document.getElementById("cart-counter");
+        itemCountElement.textContent = `Total Items: ${items.length}`;
+    };
+    fetchCartItems();
 </script>
 </body>
 </html>
