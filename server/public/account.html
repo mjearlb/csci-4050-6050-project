@@ -23,9 +23,24 @@
             border-radius: 5px;
             cursor: pointer;
         }
-        
+
         .header-buttons:hover {
             background-color: #777;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
         }
     </style>
 </head>
@@ -42,8 +57,35 @@
 </header>
 
 <div>
-    <h1 id="welcomeMessage">Account: </h1>
-    <p>Add account info of user to this page</p>
+    <h1 id="welcomeMessage">User Account: </h1>
+</div>
+<div class="container">
+    <table>
+        <tr>
+            <th>Field</th>
+            <th>Value</th>
+        </tr>
+        <tr>
+            <td>Username</td>
+            <td id="username"></td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td id="email"></td>
+        </tr>
+        <tr>
+            <td>Password</td>
+            <td id="password"></td>
+        </tr>
+        <tr>
+            <td>First Name</td>
+            <td id="firstname"></td>
+        </tr>
+        <tr>
+            <td>Last Name</td>
+            <td id="lastname"></td>
+        </tr>
+    </table>
 </div>
 
 <script>
@@ -54,7 +96,7 @@
                 const userDataArray = await response.json();
                 if (userDataArray.length > 0) {
                     const userData = userDataArray[0];
-                    document.getElementById('welcomeMessage').innerText = `Account: ${userData.username}!`;
+                    document.getElementById('welcomeMessage').innerText = `User Account: ${userData.username}!`;
                 } else {
                     window.location.href = `/`;
                 }
@@ -77,6 +119,37 @@
             alert('Username not provided in URL.');
         }
     });
+    document.addEventListener('DOMContentLoaded', () => {
+            // Function to fetch user data from server and populate the HTML table
+            async function fetchUserData(username) {
+                try {
+                    const response = await fetch(`/admin/getUser/username/${username}`);
+                    const userDataArray = await response.json();
+                    // Check if userDataArray is not empty
+                    if (userDataArray.length > 0) {
+                        const userData = userDataArray[0]; // Extract the first object from the array
+                        document.getElementById('username').innerText = userData.username;
+                        document.getElementById('email').innerText = userData.email;
+                        document.getElementById('password').innerText = userData.password;
+                        document.getElementById('firstname').innerText = userData.first_name;
+                        document.getElementById('lastname').innerText = userData.last_name;
+                    } else {
+                        alert('User data not found.');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('An error occurred while fetching user data.');
+                }
+            }
+    
+            // Extract username from the URL path and fetch user data
+            const username = window.location.pathname.split('/').pop();
+            if (username) {
+                fetchUserData(username);
+            } else {
+                alert('Username not provided in URL.');
+            }
+        });
 </script>
 </body>
 </html>
