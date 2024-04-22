@@ -8,6 +8,8 @@ const exampleUserList = [
     {"date_registered": "2024-04-15T21:26:58.000Z", "email": "ex@ex.com", "first_name": "First", "id": 1003, "last_name": "Last", "password": "Pass!", "username": "testUser"}
 ];
 
+// const expectedUserList = await request(app).get('/users/getUsers');
+
 const exampleUser = [{
     "id": 1003,
     "username": "testUser",
@@ -17,6 +19,8 @@ const exampleUser = [{
     "password": "Pass!",
     "date_registered": "2024-04-15T21:26:58.000Z"
 }];
+
+// const expectedUser = await request(app).get('/users/getUser/1003');
 
 const exampleEmailChange = [{
     "id": 1003,
@@ -44,6 +48,8 @@ const exampleCommentsList = [
         "time_stamp": "2024-03-19T17:03:38.000Z"
     }
 ];
+
+// const expectedComments = await request(app).get('/comments/getComments');
 
 // Unit test suite for GET /users/getUsers endpoint
 describe("GET /users/getUsers", () =>{
@@ -146,6 +152,83 @@ describe("POST /tickets/purchaseTickets", () => {
     // Adds the park tickets to the users account
     test('responds to /tickets/purchaseTickets', async () => {
         // Add test implementation here
+    });
+
+});
+
+
+// Unit test suite for POST /admin/verifyLogin endpoint
+describe("POST /admin/verifyLogin", () => {
+
+    // Verifys that the username and password are correct
+    test('responds to /admin/verifyLogin', async() => {
+
+    });
+
+});
+
+
+// Unit test suite for GET /admin/getUser/username endpoint
+describe("POST /admin/getUser/username", () => {
+
+    // Retrieves the user account based on the username
+    test('responds to /admin/getUser/username', async() => {
+
+    });
+
+});
+
+
+// Unit test suite for GET /admin/cart/getItems endpoint
+describe("GET /admin/cart/getItems/:username", () => {
+
+    // Gets all of the items in the cart given a username
+    test('responds to /admin/cart/getItems', async() => {
+
+    });
+
+});
+
+
+// Unit test suite for POST /admin/cart/addItem/:username/:itemId/:quantity
+describe("POST /admin/cart/addItem/:username/:itemId/:quantity", () => {
+
+    // Adds the item to the cart
+    test('responds to /admin/cart/addItem', async() => {
+
+    });
+
+});
+
+
+// Unit test suite for DELETE /admin/cart/removeItem/:cartId
+describe("DELETE /admin/cart/removeItem", () => {
+
+    // Removes the item from the cart
+    test('responds to /admin/cart/removeItem/:cartId', async() => {
+
+    });
+
+});
+
+
+// Unit test suit for GET /admin/merchandies/getItems
+describe("GET /admin/merchandise/getItems", () => {
+
+    // Retrieves all of the merchandise items
+    test('responds to /admin/merchandise/getItems', async() => {
+
+    });
+
+});
+
+
+// Unit test suite for GET /admin/merchandise/getItem/:id
+describe("GET /admin/merchandise/getItem/:id", () => {
+
+    // Retrieves the information about a specific item
+    test('responds to /admin/merchandise/getItem/:id', async() => {
+
     });
 
 });
