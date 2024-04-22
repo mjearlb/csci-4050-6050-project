@@ -54,7 +54,7 @@ CREATE TABLE `cart` (
   `cart_id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
   `item_id` int NOT NULL,
-  `quanitity` int NOT NULL DEFAULT '1',
+  `quantity` int NOT NULL DEFAULT '1',
   `time_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `is_active` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`cart_id`),
@@ -71,6 +71,7 @@ CREATE TABLE `cart` (
 
 LOCK TABLES `cart` WRITE;
 /*!40000 ALTER TABLE `cart` DISABLE KEYS */;
+INSERT INTO `cart` VALUES (1,1000,2,1,'2024-03-19 13:02:21',1);
 /*!40000 ALTER TABLE `cart` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -127,7 +128,7 @@ CREATE TABLE `merchandise` (
 
 LOCK TABLES `merchandise` WRITE;
 /*!40000 ALTER TABLE `merchandise` DISABLE KEYS */;
-INSERT INTO `merchandise` VALUES (1,'Park T-Shirt S',100,20.00),(2,'Park T-Shirt M',100,20.00),(3,'Park T-Shirt L',100,20.00),(4,'Park T-Shirt XL',100,20.00),(7,'Park Branded Nalgene Water Bottle',100,25.00);
+INSERT INTO `merchandise` VALUES (1,'Park T-Shirt S',100,20.00),(2,'Park T-Shirt M',100,20.00),(3,'Park T-Shirt L',100,20.00),(4,'Park T-Shirt XL',100,20.00),(5,'Park Branded Nalgene Water Bottle',100,25.00);
 /*!40000 ALTER TABLE `merchandise` ENABLE KEYS */;
 UNLOCK TABLES;
 

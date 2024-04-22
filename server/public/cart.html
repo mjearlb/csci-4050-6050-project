@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <style>
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+        
+        .header-buttons {
+            display: inline-block;
+            margin: 0 10px;
+            padding: 8px 16px;
+            background-color: #555;
+            color: #fff;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .header-buttons:hover {
+            background-color: #777;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="#" class="header-buttons" id="homeButton">Home</a>
+    <a href="#" class="header-buttons" id="ticketsButton">Tickets</a>
+    <a href="#" class="header-buttons" id="communityButton">Community</a>
+    <a href="#" class="header-buttons" id="giftShopButton">Gift Shop</a>
+    <a href="#" class="header-buttons" id="cartButton">Cart</a>
+    <a href="#" class="header-buttons" id="accountButton">Account</a>
+    <a href="/" class="header-buttons">Log Out</a>
+</header>
+
+<div>
+    <h1 id="welcomeMessage">Your Cart: </h1>
+</div>
+
+<div> <h2 id="total-price"> </h2> </div>
+<div> <h3 id="cart-counter"> </h3> </div>
+<div id="cart-items"></div> 
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        async function fetchUserData(username) {
+            try {
+                const response = await fetch(`/admin/getUser/username/${username}`);
+                const userDataArray = await response.json();
+                if (userDataArray.length > 0) {
+                    const userData = userDataArray[0];
+                    document.getElementById('welcomeMessage').innerText = `${userData.username}'s Cart`;
+                } else {
+                    window.location.href = `/`;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while fetching user data.');
+            }
+        }
+
+        const username = window.location.pathname.split('/').pop();
+        if (username) {
+            fetchUserData(username);
+            document.getElementById('homeButton').href = `/home/${username}`;
+            document.getElementById('ticketsButton').href = `/tickets/${username}`;
+            document.getElementById('communityButton').href = `/community/${username}`;
+            document.getElementById('giftShopButton').href = `/shop/${username}`;
+            document.getElementById('cartButton').href = `/cart/${username}`;
+            document.getElementById('accountButton').href = `/account/${username}`;
+        } else {
+            alert('Username not provided in URL.');
+        }
+    });
+
+    const username = window.location.pathname.split('/').pop();
+
+    const removeItem = async (cartId) => {
+        await fetch(`/admin/cart/removeItem/${cartId}`);
+        await fetchCartItems();
+    };
+
+    const purchaseCartItems = async () => {
+        const response = await fetch(`/admin/cart/getItems/${username}`);
+        const items = await response.json();
+        for (const item of items) {
+            await removeItem(item.cart_id);
+        }
+        await fetchCartItems();
+    };
+
+    const fetchCartItems = async () => {
+        const response = await fetch(`/admin/cart/getItems/${username}`);
+        const items = await response.json();           
+        renderCartItems(items);
+    };
+
+    const fetchMerchandiseInfo = async (itemId) => {
+        const response = await fetch(`/admin/merchandise/getItem/${itemId}`);
+        const merchandise = await response.json();
+        return merchandise;
+    };
+
+    const renderCartItems = async (items) => {
+        const cartItemsContainer = document.getElementById("cart-items");
+        cartItemsContainer.innerHTML = "";
+        let totalPrice = 0;
+        let itemNumber = 0;
+        if (items.length === 0) {
+            cartItemsContainer.innerHTML = "<p>Your cart is empty.</p>";
+        } else {
+            for (const item of items) {
+                const merchandise = await fetchMerchandiseInfo(item.item_id);
+                const itemHTML = `
+                <div class="cart-item">
+                    <div>
+                        <h3>Item Name: ${merchandise[0].item_name}</h3>
+                        <p>Price: $${merchandise[0].price}</p>
+                        <p>Quantity: ${item.quantity}</p>
+                        </div>
+                        <button onclick="removeItem(${item.cart_id})">Delete</button>
+                    </div>
+                `;
+                totalPrice += merchandise[0].price * item.quantity;
+                itemNumber += item.quantity;
+                cartItemsContainer.innerHTML += itemHTML;
+            }
+        }
+        const totalPriceElement = document.getElementById("total-price");
+        totalPriceElement.innerHTML = `<p>Total Price: $${totalPrice.toFixed(2)}
+            <button onclick="purchaseCartItems()">Purchase</button></p>`;;
+        const itemCountElement = document.getElementById("cart-counter");
+        itemCountElement.textContent = `Total Items: ${itemNumber}`;
+    };
+    fetchCartItems();
+</script>
+</body>
+</html>

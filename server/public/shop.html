@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gift Shop</title>
+    <style>
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+        
+        .header-buttons {
+            display: inline-block;
+            margin: 0 10px;
+            padding: 8px 16px;
+            background-color: #555;
+            color: #fff;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .header-buttons:hover {
+            background-color: #777;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="#" class="header-buttons" id="homeButton">Home</a>
+    <a href="#" class="header-buttons" id="ticketsButton">Tickets</a>
+    <a href="#" class="header-buttons" id="communityButton">Community</a>
+    <a href="#" class="header-buttons" id="giftShopButton">Gift Shop</a>
+    <a href="#" class="header-buttons" id="cartButton">Cart</a>
+    <a href="#" class="header-buttons" id="accountButton">Account</a>
+    <a href="/" class="header-buttons">Log Out</a>
+</header>
+
+<div>
+    <h1 id="welcomeMessage">Welcome to the Gift Shop!</h1>
+</div>
+
+<div id="merchandise"></div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        async function fetchUserData(username) {
+            try {
+                const response = await fetch(`/admin/getUser/username/${username}`);
+                const userDataArray = await response.json();
+                if (userDataArray.length > 0) {
+                    const userData = userDataArray[0];
+                    document.getElementById('welcomeMessage').innerText = `Welcome to the Gift Shop, ${userData.username}!`;
+                } else {
+                    window.location.href = `/`;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while fetching user data.');
+            }
+        }
+        const username = window.location.pathname.split('/').pop();
+        if (username) {
+            fetchUserData(username);
+            document.getElementById('homeButton').href = `/home/${username}`;
+            document.getElementById('ticketsButton').href = `/tickets/${username}`;
+            document.getElementById('communityButton').href = `/community/${username}`;
+            document.getElementById('giftShopButton').href = `/shop/${username}`;
+            document.getElementById('cartButton').href = `/cart/${username}`;
+            document.getElementById('accountButton').href = `/account/${username}`;
+        } else {
+            alert('Username not provided in URL.');
+        }
+    });
+    document.addEventListener("DOMContentLoaded", async function() {
+        try {
+            const response = await fetch(`/admin/merchandise/getItems`);
+            const items = await response.json();
+            const merchandise = document.getElementById("merchandise");
+            items.forEach(item => {
+                const list = document.createElement("li");
+
+                const itemNameAndPrice = document.createElement("span");
+                itemNameAndPrice.textContent = `${item.item_name} - $${item.price}`;
+                list.appendChild(itemNameAndPrice);
+
+                const space = document.createTextNode(" ");
+                list.appendChild(space);
+
+                const quantityInput = document.createElement("input");
+                quantityInput.type = "number";
+                quantityInput.value = 1;
+                quantityInput.min = 1;
+                quantityInput.max = item.number_in_stock;
+                list.appendChild(quantityInput);
+
+                const purchaseButton = document.createElement("button");
+                purchaseButton.textContent = "Purchase";
+                purchaseButton.addEventListener("click", async () => {
+                    try {
+                        const username = window.location.pathname.split('/').pop();
+                        const itemId = item.item_id;
+                        const quantity = parseInt(quantityInput.value);
+                        const response = await fetch(`/admin/cart/addItem/${username}/${itemId}/${quantity}`);
+                    } catch (error) {
+                        console.error("Error purchasing item:", error);
+                    }
+                });
+                list.appendChild(purchaseButton);
+                merchandise.appendChild(list);
+            });
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    });
+</script>
+</body>
+</html>
