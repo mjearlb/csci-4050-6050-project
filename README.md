@@ -10,9 +10,9 @@ Branches:
 
 Roles: 
 - Milo Bauman: Project Lead, Project Structure Design, Database, Back-End
-- Caden: Requirements Gathering, Documentation, Testing, Back-End
-- Edward: Back-End, Testing
-- Hayden: Front-End, Testing
+- Caden: Requirements Gathering, Documentation, Testing, Front-End
+- Edward: Front-End, Testing
+- Hayden: Back-End, Testing, Documentation
 - Alex: Front-End, Testing
 
 Dependencies: 
