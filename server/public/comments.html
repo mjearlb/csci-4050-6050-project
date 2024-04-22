@@ -72,12 +72,17 @@
       //fetch comments when page loads
       window.onload = fetchComments;
 
-      //need add comment method
+      function addComment(e){
+        e.preventDefault();
+        //TODO: use fetch to send request to backend
+      }
     </script>
 
 
     <h1> Feedback Page </h1>
-    <form>
+    <form
+      onsubmit="addComment(event)"
+    >
       <label for="box">Add Comment:</label><br>
       <input type="textarea" id="box" class="resized" name="comment"><br><br>
       <button type="submit">Submit</button>
