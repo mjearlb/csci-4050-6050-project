@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Community</title>
     <style>
+        .resized{
+            width: 1450px;
+            height: 60px;
+            padding: 2px; 
+        }
+
         header {
             background-color: #333;
             color: #fff;
@@ -46,6 +52,19 @@
     <p>Add Community discussion board to this page</p>
 </div>
 
+    <form
+        onsubmit="addComment(event)"
+    >
+    <label for="box">Add Comment:</label><br>
+    <input type="textarea" id="box" class="resized" name="comment"><br><br>
+    <button type="submit">Submit</button>
+    </form>
+
+    <hr>
+    <h3> Comments: </h3>
+    <p>Total Comments: <span id="comment-count">0</span></p>
+    <ul id="comments-list"></ul>
+
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         async function fetchUserData(username) {
@@ -77,6 +96,37 @@
             alert('Username not provided in URL.');
         }
     });
+
+    // Function to update the comment count
+    function updateCommentCount(count) {
+        const commentCountSpan = document.getElementById('comment-count');
+        commentCountSpan.textContent = count;
+    }
+    
+    // Fetch comments from server and render them
+    async function fetchComments() {
+        try {
+          const response = await fetch('/getCommentsFromSQL');
+          const comments = await response.json();
+
+          const commentsList = document.getElementById('comments-list');
+          comments.forEach(comment => {
+            const li = document.createElement('li');
+            li.textContent = comment.comment;
+            commentsList.appendChild(li);
+        });
+        } catch (error) {
+          console.error('Error fetching comments:', error);
+        }   
+    }
+    
+    //fetch comments when page loads
+    window.onload = fetchComments;
+
+    function addComment(e){
+        e.preventDefault();
+        //TODO: use fetch to send request to backend
+    }
 </script>
 </body>
 </html>
