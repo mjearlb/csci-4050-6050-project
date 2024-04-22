@@ -3,7 +3,8 @@ const path = require('path')
 const app = express()
 const PORT = process.env.PORT || 3000;
 
-const {getUsers, getUser, getUserByUsername, createUser, getComments, changeEmail, purchaseTicket, registerUser, verifyLogin, getCart, addCartItem, removeCartItem, getMerchandise, getAllMerchandise} = require('./database.js');
+const {getUsers, getUser, getUserByUsername, createUser, getComments, changeEmail, purchaseTicket, 
+    registerUser, verifyLogin, getCart, addCartItem, removeCartItem, getMerchandise, getAllMerchandise, getTickets} = require('./database.js');
 
 app.use(express.json());
 
@@ -25,6 +26,11 @@ app.get('/home/:username', (req, res) => {
 // Tickets page
 app.get('/tickets/:username', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/tickets.html'))
+}) 
+
+// Purchased tickets page
+app.get('/tickets/purchased/:username', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/purchasedTickets.html'))
 }) 
 
 // Community page
@@ -142,6 +148,18 @@ app.get('/admin/merchandise/getItem/:id', async (req, res) => {
         const id = req.params.id;
         const merchandise = await getMerchandise(id);
         res.json(merchandise);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Something went wrong');
+    }
+});
+
+// Admin use to get tickets for username
+app.get('/admin/tickets/getTickets/:username', async (req, res) => {
+    try {
+        const username = req.params.username;
+        const tickets = await getTickets(username);
+        res.json(tickets);
     } catch (error) {
         console.error(error);
         res.status(500).send('Something went wrong');

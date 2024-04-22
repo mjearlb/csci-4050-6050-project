@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ticket Shop</title>
+    <title>Purchased Tickets</title>
     <style>
         header {
             background-color: #333;
@@ -27,29 +27,6 @@
         .header-buttons:hover {
             background-color: #777;
         }
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .box {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 80%;
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .button {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
     </style>
 </head>
 <body>
@@ -65,22 +42,8 @@
 </header>
 
 <div>
-    <h1 id="welcomeMessage">Welcome to our Tickets page!</h1>
-    <p>Add purchasing tickets to this page</p>
-</div>
-<div class="container">
-    <div class="box">
-        <div>
-            <p>Look at previously purchased tickets</p>
-        </div>
-        <div>
-            <a href="#" class="button" id="purchasedTickets">Purchased Tickets</a>
-        </div>
-    </div>
-    <div>
-        <h2>Purchase New Tickets</h2>
-        <!-- Add your content for purchasing new tickets here -->
-    </div>
+    <h1 id="welcomeMessage">Welcome to our Home page!</h1>
+    <p>This is just a welcome screen saying hello to guests.</p>
 </div>
 
 <script>
@@ -91,7 +54,7 @@
                 const userDataArray = await response.json();
                 if (userDataArray.length > 0) {
                     const userData = userDataArray[0];
-                    document.getElementById('welcomeMessage').innerText = `Welcome to our Tickets page, ${userData.username}!`;
+                    document.getElementById('welcomeMessage').innerText = `Welcome to your purchased tickets, ${userData.username}!`;
                 } else {
                     window.location.href = `/`;
                 }
@@ -110,7 +73,6 @@
             document.getElementById('giftShopButton').href = `/shop/${username}`;
             document.getElementById('cartButton').href = `/cart/${username}`;
             document.getElementById('accountButton').href = `/account/${username}`;
-            document.getElementById('purchasedTickets').href = `/tickets/purchased/${username}`;
         } else {
             alert('Username not provided in URL.');
         }

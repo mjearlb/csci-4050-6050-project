@@ -150,6 +150,12 @@ async function getMerchandise(id) {
     return rows
 } // getMerchandise
 
+async function getTickets(username) {
+    const id = await getId(username);
+    const [rows] = await pool.query("SELECT * FROM tickets WHERE user_id = ?", [id.id])
+    return rows
+} // getTickets
+
 module.exports = {
     getUsers,
     getUser,
@@ -163,7 +169,8 @@ module.exports = {
     addCartItem,
     removeCartItem,
     getMerchandise,
-    getAllMerchandise
+    getAllMerchandise, 
+    getTickets
 };
 
 // testing
