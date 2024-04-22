@@ -33,6 +33,15 @@ app.get('/tickets/purchased/:username', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/purchasedTickets.html'))
 }) 
 
+// Get tickets page
+app.get('/tickets/:type/:username', (req, res) => {
+    const username = req.params.username;
+    console.log("Username: ", username)
+    const type = req.params.type;
+    console.log("Type: ", type)
+    res.sendFile(path.join(__dirname, 'public/getTickets.html'))
+}) 
+
 // Community page
 app.get('/community/:username', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/community.html'))

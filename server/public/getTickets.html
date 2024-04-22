@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Purchased Tickets</title>
+    <title>Purchase Tickets</title>
     <style>
         header {
             background-color: #333;
@@ -27,23 +27,6 @@
         .header-buttons:hover {
             background-color: #777;
         }
-
-        .ticket-box {
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 10px;
-            margin: 10px;
-            display: inline-block;
-            text-align: center;
-        }
-
-        .general-admission {
-            background-color: rgb(73, 208, 231);
-        }
-
-        .fast-pass {
-            background-color: yellow;
-        }
     </style>
 </head>
 <body>
@@ -59,22 +42,24 @@
 </header>
 
 <div>
-    <h1 id="welcomeMessage">Your Purchased Tickets:!</h1>
+    <h1 id="welcomeMessage">Purchasing Tickets</h1>
 </div>
-
-<div id="tickets-container"></div>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         async function fetchUserData(username) {
             try {
-                const response = await fetch(`/admin/getUser/username/${username}`);
-                const userDataArray = await response.json();
-                if (userDataArray.length > 0) {
-                    const userData = userDataArray[0];
-                    document.getElementById('welcomeMessage').innerText = `${userData.username}'s Purchased Tickets`;
+                if (type == "Fast Past" || type == "General Admission") {
+                    const response = await fetch(`/admin/getUser/username/${username}`);
+                    const userDataArray = await response.json();
+                    if (userDataArray.length > 0) {
+                        const userData = userDataArray[0];
+                        document.getElementById('welcomeMessage').innerText = `Purchasing ${type}: ${userData.username}`;
+                    } else {
+                        window.location.href = `/`;
+                    }
                 } else {
-                    window.location.href = `/`;
+                    window.location.href = `/tickets/${username}`;
                 }
             } catch (error) {
                 console.error('Error:', error);
@@ -83,6 +68,7 @@
         }
 
         const username = window.location.pathname.split('/').pop();
+        const type = window.location.pathname.split('/')[2].replace('%20', ' ');
         if (username) {
             fetchUserData(username);
             document.getElementById('homeButton').href = `/home/${username}`;
@@ -95,34 +81,6 @@
             alert('Username not provided in URL.');
         }
     });
-    document.addEventListener("DOMContentLoaded", async function() {
-        try {
-            const username = window.location.pathname.split('/').pop();
-            const response = await fetch(`/admin/tickets/getTickets/${username}`)
-            const tickets = await response.json();
-            const ticketsContainer = document.getElementById('tickets-container');
-            tickets.forEach(ticket => {
-                const ticketBox = document.createElement('div');
-                ticketBox.classList.add('ticket-box');
-                if (ticket.ticket_type === 'General Admission') {
-                    ticketBox.classList.add('general-admission');
-                } else if (ticket.ticket_type === 'Fast Pass') {
-                    ticketBox.classList.add('fast-pass');
-                }
-                ticketBox.innerHTML = `
-                    <h2>${ticket.ticket_type} Ticket</h2>
-                    <p>Valid: ${new Date(ticket.date_valid).toLocaleString()}</p>
-                    <p>Purchased: ${new Date(ticket.date_purchased).toLocaleString()}</p>
-                `;
-                ticketsContainer.appendChild(ticketBox);
-            });
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        }
-    });
-
-
-
 </script>
 </body>
 </html>
