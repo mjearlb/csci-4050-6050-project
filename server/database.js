@@ -53,10 +53,10 @@ async function createUser(username, lastname, firstname, email, password) {
 async function registerUser(username, lastname, firstname, email, password) {
     const [emailCheck] = await pool.query("SELECT * FROM users WHERE email = ?", [email])
     const [usernameCheck] = await pool.query("SELECT * FROM users WHERE username = ?", [username])
-    if (emailCheck.length > 0) {
+    if (emailCheck.length > 0) { // email already exists
         return false
     } 
-    if (usernameCheck.length > 0) {
+    if (usernameCheck.length > 0) { // username already exists
         return false
     }
     const result = await createUser(username, lastname, firstname, email, password)
@@ -81,7 +81,7 @@ async function getComments() {
 
 async function removeUser(username) {
     const [result] = await pool.query("DELETE FROM users WHERE username = ?", [username])
-    if (result.changedRows > 0) {
+    if (result.affectedRows > 0) {
         return true; // user was successfully removed
     } else {
         return false; // No rows were updated, user deletion failed
@@ -121,9 +121,9 @@ async function addCartItem(username, item_id, quantity) {
     const time_added = new Date().toISOString().slice(0, 19).replace('T', ' ');
     const [result] = await pool.query("INSERT INTO cart (user_id, item_id, quantity, time_added, is_active) VALUES (?, ?, ?, ?, ?)", [user_id.id, item_id, quantity, time_added, 1]);
     if (result.affectedRows > 0) {
-        return true; // user was created
+        return true; // item was added to cart
     } else {
-        return false; // user was not created
+        return false; // item was not added to cart
     }
 } // addCartItem
 
@@ -131,9 +131,9 @@ async function addCartItem(username, item_id, quantity) {
 async function removeCartItem(cart_id) {
     const [result] = await pool.query("DELETE FROM cart WHERE cart_id = ?", [cart_id])
     if (result.affectedRows > 0) {
-        return true; // user was successfully removed
+        return true; // cart was successfully removed
     } else {
-        return false; // No rows were updated, user deletion failed
+        return false; // No rows were updated, cart deletion failed
     }
 } // removeCartItem
 
@@ -150,29 +150,40 @@ async function getMerchandise(id) {
     return rows
 } // getMerchandise
 
-// Returns ticket for given username
-async function getTickets(username) {
-    const id = await getId(username);
-    const [rows] = await pool.query("SELECT * FROM tickets WHERE user_id = ?", [id.id])
-    return rows
-} // getTickets
-
-// adds item to cart
-async function addTicket(username, ticket_type, date_valid) {
-    const user_id = await getId(username);
-    const date_purchased = new Date().toISOString().slice(0, 19).replace('T', ' ');
-    const [result] = await pool.query("INSERT INTO tickets (user_id, ticket_type, date_purchased, date_valid) VALUES (?, ?, ?, ?)", [user_id.id, ticket_type, date_purchased, date_valid]);
-    if (result.affectedRows > 0) {
-        return true; // user was created
-    } else {
-        return false; // user was not created
+// checks if login info is correct
+async function checkLogin(username, password) {
+    const [rows] = await pool.query("SELECT * FROM users WHERE username = ?", [username])
+    if (rows.length == 0) {
+        return false
     }
-} // addTicket
+    const user = rows[0]
+    if (user.password == password) {
+        return true
+    } else {
+        return false
+    }
+} // checkLogin
+
+async function purchaseTicket(user_id, ticket_type, date_valid) {
+    const [result] = await pool.query("INSERT INTO tickets (user_id, ticket_type, date_valid) VALUES (?, ?, ?)", [user_id, ticket_type, date_valid])
+    if (result.affectedRows > 0) {
+        return true; // ticket was created
+    } else {
+        return false; // ticket was not created
+    }
+} // purchaseTicket
+
+async function getTickets(user_id) {
+    const [result] = await pool.query("SELECT * FROM tickets WHERE user_id = ?", [user_id])
+    return result
+} // getTickets
+ 
 
 module.exports = {
     getUsers,
     getUser,
     registerUser,
+    removeUser,
     getComments, 
     changeEmail, 
     purchaseTicket, 
@@ -183,14 +194,15 @@ module.exports = {
     removeCartItem,
     getMerchandise,
     getAllMerchandise, 
-    getTickets, 
-    addTicket
+    checkLogin, 
+    purchaseTicket, 
+    getTickets
 };
 
 // testing
 
 async function run() {
-    const testRegUser = registerUser("testUser", "Last", "First", "ex@ex.com", "Pass!")
-} 
+    const testPurchTick = await purchaseTicket(1000, "General Admission", "2024-04-23")
+}
 
-run()
+//run()

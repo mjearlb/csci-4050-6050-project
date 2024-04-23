@@ -27,6 +27,16 @@
         .header-buttons:hover {
             background-color: #777;
         }
+
+        body {
+            background-color: rgb(221, 220, 220);
+            color:  rgb(221, 220, 220);
+        }
+
+        .body-text {
+            color: rgb(0,0,0);
+        }
+
     </style>
 </head>
 <body>
@@ -41,10 +51,10 @@
     <a href="/" class="header-buttons">Log Out</a>
 </header>
 
-<div>
+<div class="body-text">
     <h1 id="welcomeMessage">Welcome to the Gift Shop!</h1>
 </div>
-<div id="merchandise"></div>
+<div id="merchandise" class="body-text"></div>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -92,14 +102,14 @@
                 list.appendChild(space);
 
                 const quantityInput = document.createElement("input");
-                quantityInput.type = "number";
+                quantityInput.type = "number";  
                 quantityInput.value = 1;
                 quantityInput.min = 1;
                 quantityInput.max = item.number_in_stock;
                 list.appendChild(quantityInput);
 
                 const purchaseButton = document.createElement("button");
-                purchaseButton.textContent = "Purchase";
+                purchaseButton.textContent = "Add to cart";
                 purchaseButton.addEventListener("click", async () => {
                     try {
                         const username = window.location.pathname.split('/').pop();
