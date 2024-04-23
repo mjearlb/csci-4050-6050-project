@@ -61,7 +61,6 @@
 <div>
     <h1 id="welcomeMessage">Your Purchased Tickets:!</h1>
 </div>
-
 <div id="tickets-container"></div>
 
 <script>
@@ -101,7 +100,7 @@
             const response = await fetch(`/admin/tickets/getTickets/${username}`)
             const tickets = await response.json();
             const ticketsContainer = document.getElementById('tickets-container');
-            tickets.forEach(ticket => {
+            tickets.reverse().forEach(ticket => {
                 const ticketBox = document.createElement('div');
                 ticketBox.classList.add('ticket-box');
                 if (ticket.ticket_type === 'General Admission') {
@@ -111,7 +110,7 @@
                 }
                 ticketBox.innerHTML = `
                     <h2>${ticket.ticket_type} Ticket</h2>
-                    <p>Valid: ${new Date(ticket.date_valid).toLocaleString()}</p>
+                    <p>Valid: ${new Date(ticket.date_valid).toLocaleString().split(',')[0]}</p>
                     <p>Purchased: ${new Date(ticket.date_purchased).toLocaleString()}</p>
                 `;
                 ticketsContainer.appendChild(ticketBox);

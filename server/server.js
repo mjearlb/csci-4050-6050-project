@@ -4,7 +4,7 @@ const app = express()
 const PORT = process.env.PORT || 3000;
 
 const {getUsers, getUser, getUserByUsername, createUser, getComments, changeEmail, purchaseTicket, 
-    registerUser, verifyLogin, getCart, addCartItem, removeCartItem, getMerchandise, getAllMerchandise, getTickets} = require('./database.js');
+    registerUser, verifyLogin, getCart, addCartItem, removeCartItem, getMerchandise, getAllMerchandise, getTickets, addTicket} = require('./database.js');
 
 app.use(express.json());
 
@@ -36,9 +36,7 @@ app.get('/tickets/purchased/:username', (req, res) => {
 // Get tickets page
 app.get('/tickets/:type/:username', (req, res) => {
     const username = req.params.username;
-    console.log("Username: ", username)
     const type = req.params.type;
-    console.log("Type: ", type)
     res.sendFile(path.join(__dirname, 'public/getTickets.html'))
 }) 
 
@@ -169,6 +167,23 @@ app.get('/admin/tickets/getTickets/:username', async (req, res) => {
         const username = req.params.username;
         const tickets = await getTickets(username);
         res.json(tickets);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Something went wrong');
+    }
+});
+
+// Admin use to add tickets for username
+app.get('/admin/tickets/addTicket/:username/:ticketType/:dateValid', async (req, res) => {
+    console.log("testing");
+    try {
+        const username = req.params.username;
+        const ticketType = req.params.ticketType;
+        const dateValid = req.params.dateValid;
+        console.log("username: ", username, " |type: ", ticketType, " |date: ", dateValid);
+        const result = await addTicket(username, ticketType, dateValid);
+        console.log("result: ", result)
+        res.json(result);
     } catch (error) {
         console.error(error);
         res.status(500).send('Something went wrong');

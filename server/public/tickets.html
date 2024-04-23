@@ -122,7 +122,7 @@
                 <li>Exclusive Entry</li>
                 <li>Special Seating</li>
             </ul>
-            <a href="#" class="button" id="fastPastButton">Get Fast Pass</a>
+            <a href="#" class="button" id="fastPassButton">Get Fast Pass</a>
         </div>
         <div class="box">
             <h2>General Admission</h2>
@@ -165,7 +165,7 @@
             document.getElementById('accountButton').href = `/account/${username}`;
             document.getElementById('purchasedButton').href = `/tickets/purchased/${username}`;
             document.getElementById('generalButton').href = `/tickets/General Admission/${username}`;
-            document.getElementById('fastPastButton').href = `/tickets/Fast Past/${username}`;
+            document.getElementById('fastPassButton').href = `/tickets/Fast Pass/${username}`;
             
         } else {
             alert('Username not provided in URL.');

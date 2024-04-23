@@ -45,11 +45,20 @@
     <h1 id="welcomeMessage">Purchasing Tickets</h1>
 </div>
 
+<h2>Select a Date:</h2>
+<input type="date" id="datePicker">
+<h2>Enter Quantity:</h2>
+<input type="number" id="quantityInput" min="1" value="1">
+
+<button id="purchaseButton">Purchase Tickets</button>
+
+
+
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         async function fetchUserData(username) {
             try {
-                if (type == "Fast Past" || type == "General Admission") {
+                if (type == "Fast Pass" || type == "General Admission") {
                     const response = await fetch(`/admin/getUser/username/${username}`);
                     const userDataArray = await response.json();
                     if (userDataArray.length > 0) {
@@ -81,6 +90,41 @@
             alert('Username not provided in URL.');
         }
     });
+    async function handlePurchase() {
+        const username = window.location.pathname.split('/').pop();
+        const type = window.location.pathname.split('/')[2].replace('%20', ' ');
+        var datePicker = document.getElementById("datePicker");
+        var quantityInput = document.getElementById("quantityInput");
+        var datePicked = datePicker.value;
+        var quantity = parseInt(quantityInput.value);
+        if (!isNaN(datePicked)) {
+            alert("Please select a valid date.");
+            return;
+        }
+        if (isNaN(quantity) || quantity < 1) {
+            alert("Please enter a valid quantity.");
+            return;
+        }
+        try {
+            var success = true;
+            for (var i = 0; i < quantity; i++) {
+                var response = await fetch(`/admin/tickets/addTicket/${username}/${type}/${datePicked}}`);
+                if (!response.ok) {
+                    success = false;
+                }
+            }
+            if (success) {
+                    alert("Purchase made!");
+                    window.location.href = `/tickets/purchased/${username}`;
+                } else {
+                    alert("Failed to make purchase.");
+                }
+        } catch (error) {
+            console.error("Error:", error);
+            alert("An error occurred while processing your request.");
+        }
+    }
+    document.getElementById("purchaseButton").addEventListener("click", handlePurchase);
 </script>
 </body>
 </html>

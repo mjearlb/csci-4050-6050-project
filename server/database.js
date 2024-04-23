@@ -150,11 +150,24 @@ async function getMerchandise(id) {
     return rows
 } // getMerchandise
 
+// Returns ticket for given username
 async function getTickets(username) {
     const id = await getId(username);
     const [rows] = await pool.query("SELECT * FROM tickets WHERE user_id = ?", [id.id])
     return rows
 } // getTickets
+
+// adds item to cart
+async function addTicket(username, ticket_type, date_valid) {
+    const user_id = await getId(username);
+    const date_purchased = new Date().toISOString().slice(0, 19).replace('T', ' ');
+    const [result] = await pool.query("INSERT INTO tickets (user_id, ticket_type, date_purchased, date_valid) VALUES (?, ?, ?, ?)", [user_id.id, ticket_type, date_purchased, date_valid]);
+    if (result.affectedRows > 0) {
+        return true; // user was created
+    } else {
+        return false; // user was not created
+    }
+} // addTicket
 
 module.exports = {
     getUsers,
@@ -170,7 +183,8 @@ module.exports = {
     removeCartItem,
     getMerchandise,
     getAllMerchandise, 
-    getTickets
+    getTickets, 
+    addTicket
 };
 
 // testing
