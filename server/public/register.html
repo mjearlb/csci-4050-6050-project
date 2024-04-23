@@ -48,10 +48,9 @@
                         },
                         body: JSON.stringify({ username, last_name, first_name, email, password })
                     });
-                    const data = await response.json();
-                    if (data.success) {
+                    if (response) {
                         alert('Account successfully created.');
-                        window.location.href = `/`;
+                        window.location.href = `/home/${username}`;
                     } else {
                         alert('Account creation failed.');
                     }
