@@ -3,7 +3,7 @@ const path = require('path')
 const app = express()
 const PORT = process.env.PORT || 3000;
 
-const {getUsers, getUser, getUserByUsername, createUser, getComments, changeEmail, purchaseTicket, registerUser, verifyLogin, getCart, addCartItem, removeCartItem, getMerchandise, getAllMerchandise} = require('./database.js');
+const {getUsers, getUser, getUserByUsername, createUser, getComments, changeEmail, purchaseTicket, registerUser, removeUser, verifyLogin, getCart, addCartItem, removeCartItem, getMerchandise, getAllMerchandise} = require('./database.js');
 
 app.use(express.json());
 
@@ -115,7 +115,7 @@ app.get('/admin/cart/addItem/:username/:itemId/:quantity', async (req, res) => {
 });
 
 // Admin use to remove item from cart
-app.get('/admin/cart/removeItem/:cartId', async (req, res) => {
+app.delete('/admin/cart/removeItem/:cartId', async (req, res) => {
     try {
         const cart_id = req.params.cartId;
         const result = await removeCartItem(cart_id);
@@ -154,12 +154,6 @@ app.get('/admin/merchandise/getItem/:id', async (req, res) => {
 });
 
 
-
-
-
-
-
-
 // Calls the getUsers() DB method
 // returns all of the users
 app.get('/users/getUsers', async (req, res) => {
@@ -189,12 +183,20 @@ app.get('/users/getUser/:id', async (req,res) => {
 // registers a user account
 app.post('/users/registerUser', async (req, res) => {
     try {
-        const { username, lastname, firstname, email, password} = req.body;
+
+        //const { username, lastname, firstname, email, password} = req.body;
         //const username = req.body.username;
         //const lastname = req.body.lastname;
         //const firstname = req.body.firstname;
         //const email = req.body.email;
         //const password = req.body.password;
+
+        const username = req.body.username;
+        const lastname = req.body.last_name;
+        const firstname = req.body.first_name;
+        const email = req.body.email;
+        const password = req.body.password;
+
         const result = await registerUser(username, lastname, firstname, email, password);
         if (result) {
             res.status(200).send('User successfully registered');
@@ -281,3 +283,4 @@ app.post('/tickets/purchaseTickets', async (req, res) => {
 app.listen(PORT, () => {
     console.log(`Example app listening at http://localhost:${PORT} and http://localhost:${PORT}/date`)
 })
+module.exports = app;
