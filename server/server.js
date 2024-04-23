@@ -3,7 +3,7 @@ const path = require('path')
 const app = express()
 const PORT = process.env.PORT || 3000;
 
-const {getUsers, getUser, getUserByUsername, createUser, getComments, changeEmail, purchaseTicket, registerUser, verifyLogin, getCart, addCartItem, removeCartItem, getMerchandise, getAllMerchandise} = require('./database.js');
+const {getUsers, getUser, getUserByUsername, createUser, getComments, changeEmail, purchaseTicket, registerUser, removeUser, verifyLogin, getCart, addCartItem, removeCartItem, getMerchandise, getAllMerchandise} = require('./database.js');
 
 app.use(express.json());
 
@@ -110,7 +110,7 @@ app.get('/admin/cart/addItem/:username/:itemId/:quantity', async (req, res) => {
 });
 
 // Admin use to remove item from cart
-app.get('/admin/cart/removeItem/:cartId', async (req, res) => {
+app.delete('/admin/cart/removeItem/:cartId', async (req, res) => {
     try {
         const cart_id = req.params.cartId;
         const result = await removeCartItem(cart_id);
@@ -149,12 +149,6 @@ app.get('/admin/merchandise/getItem/:id', async (req, res) => {
 });
 
 
-
-
-
-
-
-
 // Calls the getUsers() DB method
 // returns all of the users
 app.get('/users/getUsers', async (req, res) => {
@@ -185,8 +179,8 @@ app.get('/users/getUser/:id', async (req,res) => {
 app.post('/users/registerUser', async (req, res) => {
     try {
         const username = req.body.username;
-        const lastname = req.body.lastname;
-        const firstname = req.body.firstname;
+        const lastname = req.body.last_name;
+        const firstname = req.body.first_name;
         const email = req.body.email;
         const password = req.body.password;
         const result = await registerUser(username, lastname, firstname, email, password);

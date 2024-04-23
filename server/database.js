@@ -81,7 +81,7 @@ async function getComments() {
 
 async function removeUser(username) {
     const [result] = await pool.query("DELETE FROM users WHERE username = ?", [username])
-    if (result.changedRows > 0) {
+    if (result.affectedRows > 0) {
         return true; // user was successfully removed
     } else {
         return false; // No rows were updated, user deletion failed
@@ -154,6 +154,7 @@ module.exports = {
     getUsers,
     getUser,
     registerUser,
+    removeUser,
     getComments, 
     changeEmail, 
     purchaseTicket, 
