@@ -168,9 +168,35 @@ describe("GET /comments/getComments", () => {
 // Unit test suite for POST /tickets/purchaseTickets endpoint
 describe("POST /tickets/purchaseTickets", () => {
 
+    // Success: if valid user id 
     // Adds the park tickets to the users account
     test('responds to /tickets/purchaseTickets', async () => {
-        // Add test implementation here
+        /**
+        const res = await request(app)
+            .post('/tickets/purchaseTickets')
+            .send({
+                user_id: '1003',
+                ticket_type: '',
+                date_valid: '',
+            });
+        expect(res.statusCode).toBe(200);
+        //expect().toStrictEqual();
+        */
+    });
+
+    // Failure: if invalid user id 
+    test('responds to /tickets/purchaseTickets', async () => {
+        /**
+        const res = await request(app)
+            .post('/tickets/purchaseTickets')
+            .send({
+                user_id: '5000',
+                ticket_type: '',
+                date_valid: '',
+            });
+        expect(res.statusCode).toBe(200);
+        //expect().toStrictEqual();
+        */
     });
 
 });
@@ -211,22 +237,24 @@ describe("POST /admin/getUser/username", () => {
 // Unit test suite for GET /admin/cart/getItems endpoint
 describe("GET /admin/cart/getItems/:username", () => {
 
-    /**
     // Success: if valid username is provided
     // Gets all of the items in the cart given a username
     test('responds to /admin/cart/getItems', async() => {
+        /**
         const res = await request(app).get('/admin/cart/getItems/testUser');
         expect(res.statusCode).toBe(200);
         expect(res.body).toStrictEqual(await expectedCart());
+        */
     });
 
     // Failure: if invalid username is provided
     test('responds to /admin/cart/getItems', async() => {
+        /**
         const res = await request(app).get('/admin/cart/getItems/invalid_username_ex');
         expect(res.statusCode).toBe(500);
         expect(res.body).toStrictEqual({});
+        */
     });
-    */
 
 });
 
@@ -234,9 +262,9 @@ describe("GET /admin/cart/getItems/:username", () => {
 // Unit test suite for POST /admin/cart/addItem
 describe("POST /admin/cart/addItem", () => {
 
-    /**
     // Adds the item to the user's cart
     test('responds to /admin/cart/addItem', async() => {
+        /**
         const res = await request(app)
             .post('/admin/cart/addItem')
             .send({
@@ -248,8 +276,8 @@ describe("POST /admin/cart/addItem", () => {
         expect(res.statusCode).toBe(200);
         expect(res.body).toStrictEqual({});
         expect(new_res.body).toStrictEqual(await expectedCart());
+        */
     });
-    */
 
 });
 
@@ -257,20 +285,22 @@ describe("POST /admin/cart/addItem", () => {
 // Unit test suite for DELETE /admin/cart/removeItem/:cartId
 describe("DELETE /admin/cart/removeItem", () => {
 
-    /**
     // Success: if valid cart id
     // Removes the item from the cart
     test('responds to /admin/cart/removeItem/:cartId', async() => {
+        /**
         const res = await request(app).delete('/admin/cart/removeItem/13');
         expect(res.statusCode).toBe(200);
+        */
     });
 
     // Failure: if invalid cart id
     test('responds to /admin/cart/removeItem/:cartId', async() => {
+        /**
         const res = await request(app).delete('/admin/cart/removeItem/5000');
         expect(res.statusCode).toBe(500);
+        */
     });
-    */
 
 });
 
