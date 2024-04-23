@@ -150,6 +150,20 @@ async function getMerchandise(id) {
     return rows
 } // getMerchandise
 
+// checks if login info is correct
+async function checkLogin(username, password) {
+    const [rows] = await pool.query("SELECT * FROM users WHERE username = ?", [username])
+    if (rows.length == 0) {
+        return false
+    }
+    const user = rows[0]
+    if (user.password == password) {
+        return true
+    } else {
+        return false
+    }
+} // checkLogin
+
 module.exports = {
     getUsers,
     getUser,
@@ -164,13 +178,19 @@ module.exports = {
     addCartItem,
     removeCartItem,
     getMerchandise,
-    getAllMerchandise
+    getAllMerchandise, 
+    checkLogin
 };
 
 // testing
 
 async function run() {
-    const testRegUser = registerUser("testUser", "Last", "First", "ex@ex.com", "Pass!")
-} 
+    const testGetUser = await getUsers()
+    console.log(testGetUser)
+    const testCheckLogin = await checkLogin('nate600','planes')
+    console.log(testCheckLogin)
+    const testCheckLogin2 = await checkLogin('nate600','planeS')
+    console.log(testCheckLogin2)
+}
 
-run()
+//run()
