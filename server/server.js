@@ -281,6 +281,6 @@ app.post('/tickets/purchaseTickets', async (req, res) => {
 })
 
 app.listen(PORT, () => {
-    console.log(`Example app listening at http://localhost:${PORT} and http://localhost:${PORT}/date`)
+    console.log(`Example app listening at http://localhost:${PORT}`)
 })
 module.exports = app;
