@@ -34,8 +34,8 @@
                 const formData = new FormData(document.getElementById('registerForm'));
                 const username = formData.get('username');
                 const password = formData.get('password');
-                const firstname = formData.get('firstname');
-                const lastname = formData.get('lastname');
+                const first_name = formData.get('firstname');
+                const last_name = formData.get('lastname');
                 const email = formData.get('email');
                 const code = formData.get('code');
                 
@@ -46,7 +46,7 @@
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ username, lastname, firstname, email, password })
+                        body: JSON.stringify({ username, last_name, first_name, email, password })
                     });
                     const data = await response.json();
                     if (data.success) {
