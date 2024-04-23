@@ -134,9 +134,15 @@
     //fetch comments when page loads
     window.onload = fetchComments;
 
-    function addComment(e){
-        e.preventDefault();
-        //TODO: use fetch to send request to backend
+    //TODO: create seperate method for when there is no parent id, cant send null 
+    // implement reply system 
+    async function addComment(e){
+        //e.preventDefault(); //prevents the page from refreshing, currently turned off
+        var comment = document.getElementById('textbox').value
+        var username = window.location.pathname.split('/').pop();
+        const response = await fetch(`/admin/comment/addComment/${username}/${comment}`); 
+        const items = await response.json();   
+        fetchComments(); 
     }
 </script>
 </body>

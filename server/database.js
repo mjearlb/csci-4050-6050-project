@@ -79,6 +79,30 @@ async function getComments() {
     return rows
 } // getComments
 
+// add comment to database
+async function addComment(username, comment) {
+    const user_id = await getId(username);
+    const time_stamp = new Date().toISOString().slice(0, 19).replace('T', ' ');
+    const [result] = await pool.query("INSERT INTO comments (user_id, comment, time_stamp) VALUES (?, ?, ?)", [user_id.id, comment, time_stamp]);
+    if (result.affectedRows > 0) {
+        return true; // comment was created
+    } else {
+        return false; // comment was not created
+    }
+} // addComment 
+
+// add comment that is a reply to database
+async function addCommentReply(username, comment, parent_id) {
+    const user_id = await getId(username);
+    const time_stamp = new Date().toISOString().slice(0, 19).replace('T', ' ');
+    const [result] = await pool.query("INSERT INTO comments (user_id, comment, parent_id, time_stamp) VALUES (?, ?, ?, ?)", [user_id.id, comment, parent_id, time_stamp]);
+    if (result.affectedRows > 0) {
+        return true; // comment was created
+    } else {
+        return false; // comment was not created
+    }
+} // addCommentReply
+
 async function removeUser(username) {
     const [result] = await pool.query("DELETE FROM users WHERE username = ?", [username])
     if (result.affectedRows > 0) {

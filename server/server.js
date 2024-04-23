@@ -268,6 +268,41 @@ app.get('/comments/getComments', async (req, res) => {
     }
 })
 
+// Admin use to add comment to database
+app.get('/admin/comment/addComment/:username/:comment', async (req, res) => {
+    try {
+        const username = req.params.username;
+        const comment = req.params.comment;
+        const result = await addComment(username, comment);
+        if (result) {
+            res.status(200).send('Comment successfully created'); 
+        } else {
+            res.status(500).send('Comment creation failed'); 
+        }
+    } catch (error) {
+        console.error(error); 
+        res.status(500).send('something went wrong'); 
+    }
+}); 
+
+// Admin use to add comment that is a reply to database
+app.get('/admin/comment/addCommentReply/:username/:comment/:parentId', async (req, res) => {
+    try {
+        const username = req.params.username;
+        const comment = req.params.comment;
+        const parent_id = req.params.parentId;
+        const result = await addCommentReply(username, comment, parent_id);
+        if (result) {
+            res.status(200).send('Comment successfully created'); 
+        } else {
+            res.status(500).send('Comment creation failed'); 
+        }
+    } catch (error) {
+        console.error(error); 
+        res.status(500).send('something went wrong'); 
+    }
+}); 
+
 // Calls the changeEmail() DB method
 // updates the email of the user given their username
 app.put('/users/changeEmail/:username/:newEmail', async (req, res) => {
