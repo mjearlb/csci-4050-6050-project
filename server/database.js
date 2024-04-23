@@ -53,10 +53,10 @@ async function createUser(username, lastname, firstname, email, password) {
 async function registerUser(username, lastname, firstname, email, password) {
     const [emailCheck] = await pool.query("SELECT * FROM users WHERE email = ?", [email])
     const [usernameCheck] = await pool.query("SELECT * FROM users WHERE username = ?", [username])
-    if (emailCheck.length > 0) {
+    if (emailCheck.length > 0) { // email already exists
         return false
     } 
-    if (usernameCheck.length > 0) {
+    if (usernameCheck.length > 0) { // username already exists
         return false
     }
     const result = await createUser(username, lastname, firstname, email, password)
@@ -163,6 +163,7 @@ async function checkLogin(username, password) {
         return false
     }
 } // checkLogin
+
 
 module.exports = {
     getUsers,
