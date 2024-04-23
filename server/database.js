@@ -175,7 +175,6 @@ async function purchaseTicket(user_id, ticket_type, date_valid) {
 
 async function getTickets(user_id) {
     const [result] = await pool.query("SELECT * FROM tickets WHERE user_id = ?", [user_id])
-    const tickets = result[0]
     return result
 } // getTickets
  
@@ -203,8 +202,7 @@ module.exports = {
 // testing
 
 async function run() {
-    //const testPurchTick = await purchaseTicket(1000, "General Admission", "2024-04-23")
-    //console.log(await getTickets(1000))
+    const testPurchTick = await purchaseTicket(1000, "General Admission", "2024-04-23")
 }
 
-run()
+//run()
