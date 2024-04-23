@@ -17,6 +17,11 @@ app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/login.html'))
 });
 
+// Registration page
+app.get('/register', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/register.html'))
+});
+
 // Home page
 app.get('/home/:username', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/home.html'))
@@ -184,11 +189,12 @@ app.get('/users/getUser/:id', async (req,res) => {
 // registers a user account
 app.post('/users/registerUser', async (req, res) => {
     try {
-        const username = req.body.username;
-        const lastname = req.body.lastname;
-        const firstname = req.body.firstname;
-        const email = req.body.email;
-        const password = req.body.password;
+        const { username, lastname, firstname, email, password} = req.body;
+        //const username = req.body.username;
+        //const lastname = req.body.lastname;
+        //const firstname = req.body.firstname;
+        //const email = req.body.email;
+        //const password = req.body.password;
         const result = await registerUser(username, lastname, firstname, email, password);
         if (result) {
             res.status(200).send('User successfully registered');

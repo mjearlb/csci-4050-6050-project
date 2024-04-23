@@ -15,7 +15,8 @@
         <button type="submit">Login</button>
     </form>
     <p id="message"></p>
-
+    <p>Don't have an account?</p>
+    <button onclick="rFunction()">Register</button>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('loginForm').addEventListener('submit', async (event) => {
@@ -44,6 +45,9 @@
                 }
             });
         });
+        function rFunction() {
+            window.location.href = '/register';
+        }
     </script>
 </body>
 </html>
