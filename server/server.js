@@ -33,6 +33,18 @@ app.get('/tickets/:username', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/tickets.html'))
 }) 
 
+// Purchased tickets page
+app.get('/tickets/purchased/:username', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/purchasedTickets.html'))
+}) 
+
+// Get tickets page
+app.get('/tickets/:type/:username', (req, res) => {
+    const username = req.params.username;
+    const type = req.params.type;
+    res.sendFile(path.join(__dirname, 'public/getTickets.html'))
+}) 
+
 // Community page
 app.get('/community/:username', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/community.html'))
@@ -148,6 +160,35 @@ app.get('/admin/merchandise/getItem/:id', async (req, res) => {
         const id = req.params.id;
         const merchandise = await getMerchandise(id);
         res.json(merchandise);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Something went wrong');
+    }
+});
+
+// Admin use to get tickets for username
+app.get('/admin/tickets/getTickets/:username', async (req, res) => {
+    try {
+        const username = req.params.username;
+        const tickets = await getTickets(username);
+        res.json(tickets);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Something went wrong');
+    }
+});
+
+// Admin use to add tickets for username
+app.get('/admin/tickets/addTicket/:username/:ticketType/:dateValid', async (req, res) => {
+    console.log("testing");
+    try {
+        const username = req.params.username;
+        const ticketType = req.params.ticketType;
+        const dateValid = req.params.dateValid;
+        console.log("username: ", username, " |type: ", ticketType, " |date: ", dateValid);
+        const result = await addTicket(username, ticketType, dateValid);
+        console.log("result: ", result)
+        res.json(result);
     } catch (error) {
         console.error(error);
         res.status(500).send('Something went wrong');
