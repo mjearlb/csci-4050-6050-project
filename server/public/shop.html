@@ -27,6 +27,16 @@
         .header-buttons:hover {
             background-color: #777;
         }
+
+        body {
+            background-color: rgb(221, 220, 220);
+            color:  rgb(221, 220, 220);
+        }
+
+        .body-text {
+            color: rgb(0,0,0);
+        }
+
     </style>
 </head>
 <body>
@@ -41,11 +51,11 @@
     <a href="/" class="header-buttons">Log Out</a>
 </header>
 
-<div>
+<div class="body-text">
     <h1 id="welcomeMessage">Welcome to the Gift Shop!</h1>
 </div>
 
-<div id="merchandise"></div>
+<div id="merchandise" class="body-text"></div>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {

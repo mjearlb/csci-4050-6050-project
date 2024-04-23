@@ -33,6 +33,15 @@
         .header-buttons:hover {
             background-color: #777;
         }
+
+        body {
+            background-color: rgb(221, 220, 220);
+            color:  rgb(221, 220, 220);
+        }
+
+        .body-text {
+            color: rgb(0, 0, 0);
+        }
     </style>
 </head>
 <body>
@@ -47,11 +56,12 @@
     <a href="/" class="header-buttons">Log Out</a>
 </header>
 
-<div>
+<div class="body-text">
     <h1 id="welcomeMessage">Welcome to our Community page!</h1>
     <p>Add Community discussion board to this page</p>
 </div>
 
+<div class="body-text">
     <form
         onsubmit="addComment(event)"
     >
@@ -64,6 +74,7 @@
     <h3> Comments: </h3>
     <p>Total Comments: <span id="comment-count">0</span></p>
     <ul id="comments-list"></ul>
+</div>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {

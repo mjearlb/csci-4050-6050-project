@@ -6,6 +6,7 @@ const PORT = process.env.PORT || 3000;
 const {getUsers, getUser, getUserByUsername, createUser, getComments, changeEmail, purchaseTicket, registerUser, removeUser, verifyLogin, getCart, addCartItem, removeCartItem, getMerchandise, getAllMerchandise} = require('./database.js');
 
 app.use(express.json());
+app.use(express.static("public"));
 
 // Redirect to login page
 app.get('/', (req, res) => {

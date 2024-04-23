@@ -5,13 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
 </head>
+<style>
+    body {
+        background-color: rgb(221, 220, 220);
+        color:  rgb(221, 220, 220);
+    }
+
+    .body-text{
+        color:  rgb(0, 0, 0);
+        text-align: center;
+    }
+
+    .header-text {
+        color:  rgb(0, 0, 0);
+        text-align: center;
+    }
+
+</style>
 <body>
+    <div class="header-text">
+        <h1>GEORGIA COASTERS</h1>
+        <img src="ugalogo.png" width="325" height="200">
+    <div class ="body-text">
     <h2>Login</h2>
     <form id="loginForm">
         <label for="username">Username:</label><br>
-        <input type="text" id="username" name="username"><br>
+        <input type="text" id="username" name="username" size="30"><br>
         <label for="password">Password:</label><br>
-        <input type="password" id="password" name="password"><br><br>
+        <input type="password" id="password" name="password" size="30"><br><br>
         <button type="submit">Login</button>
     </form>
     <p id="message"></p>
@@ -49,5 +70,6 @@
             window.location.href = '/register';
         }
     </script>
+    </div>
 </body>
 </html>
