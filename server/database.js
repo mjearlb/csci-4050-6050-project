@@ -121,9 +121,9 @@ async function addCartItem(username, item_id, quantity) {
     const time_added = new Date().toISOString().slice(0, 19).replace('T', ' ');
     const [result] = await pool.query("INSERT INTO cart (user_id, item_id, quantity, time_added, is_active) VALUES (?, ?, ?, ?, ?)", [user_id.id, item_id, quantity, time_added, 1]);
     if (result.affectedRows > 0) {
-        return true; // user was created
+        return true; // cart was created
     } else {
-        return false; // user was not created
+        return false; // cart was not created
     }
 } // addCartItem
 
@@ -131,9 +131,9 @@ async function addCartItem(username, item_id, quantity) {
 async function removeCartItem(cart_id) {
     const [result] = await pool.query("DELETE FROM cart WHERE cart_id = ?", [cart_id])
     if (result.affectedRows > 0) {
-        return true; // user was successfully removed
+        return true; // cart was successfully removed
     } else {
-        return false; // No rows were updated, user deletion failed
+        return false; // No rows were updated, cart deletion failed
     }
 } // removeCartItem
 
@@ -164,6 +164,21 @@ async function checkLogin(username, password) {
     }
 } // checkLogin
 
+async function purchaseTicket(user_id, ticket_type, date_valid) {
+    const [result] = await pool.query("INSERT INTO tickets (user_id, ticket_type, date_valid) VALUES (?, ?, ?)", [user_id, ticket_type, date_valid])
+    if (result.affectedRows > 0) {
+        return true; // ticket was created
+    } else {
+        return false; // ticket was not created
+    }
+} // purchaseTicket
+
+async function getTickets(user_id) {
+    const [result] = await pool.query("SELECT * FROM tickets WHERE user_id = ?", [user_id])
+    const tickets = result[0]
+    return result
+} // getTickets
+ 
 
 module.exports = {
     getUsers,
@@ -180,18 +195,16 @@ module.exports = {
     removeCartItem,
     getMerchandise,
     getAllMerchandise, 
-    checkLogin
+    checkLogin, 
+    purchaseTicket, 
+    getTickets
 };
 
 // testing
 
 async function run() {
-    const testGetUser = await getUsers()
-    console.log(testGetUser)
-    const testCheckLogin = await checkLogin('nate600','planes')
-    console.log(testCheckLogin)
-    const testCheckLogin2 = await checkLogin('nate600','planeS')
-    console.log(testCheckLogin2)
+    //const testPurchTick = await purchaseTicket(1000, "General Admission", "2024-04-23")
+    //console.log(await getTickets(1000))
 }
 
-//run()
+run()
