@@ -128,7 +128,7 @@
         let totalPrice = 0;
         let itemNumber = 0;
         if (items.length === 0) {
-            cartItemsContainer.innerHTML = "<p>Your cart is empty.</p>";
+            cartItemsContainer.innerHTML = `<p class="cart-item">Your cart is empty.</p>`;
         } else {
             for (const item of items) {
                 const merchandise = await fetchMerchandiseInfo(item.item_id);

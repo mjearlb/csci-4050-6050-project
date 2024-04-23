@@ -181,14 +181,11 @@ app.get('/admin/tickets/getTickets/:username', async (req, res) => {
 
 // Admin use to add tickets for username
 app.get('/admin/tickets/purchaseTicket/:username/:ticketType/:dateValid', async (req, res) => {
-    console.log("testing");
     try {
         const username = req.params.username;
         const ticketType = req.params.ticketType;
         const dateValid = req.params.dateValid;
-        console.log("username: ", username, " |type: ", ticketType, " |date: ", dateValid);
         const result = await purchaseTicket(username, ticketType, dateValid);
-        console.log("result: ", result)
         res.json(result);
     } catch (error) {
         console.error(error);
