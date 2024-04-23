@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gift Shop</title>
+    <title>Purchased Tickets</title>
     <style>
         header {
             background-color: #333;
@@ -28,15 +28,22 @@
             background-color: #777;
         }
 
-        body {
-            background-color: rgb(221, 220, 220);
-            color:  rgb(221, 220, 220);
+        .ticket-box {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px;
+            display: inline-block;
+            text-align: center;
         }
 
-        .body-text {
-            color: rgb(0,0,0);
+        .general-admission {
+            background-color: rgb(73, 208, 231);
         }
 
+        .fast-pass {
+            background-color: yellow;
+        }
     </style>
 </head>
 <body>
@@ -51,10 +58,10 @@
     <a href="/" class="header-buttons">Log Out</a>
 </header>
 
-<div class="body-text">
-    <h1 id="welcomeMessage">Welcome to the Gift Shop!</h1>
+<div>
+    <h1 id="welcomeMessage">Your Purchased Tickets:!</h1>
 </div>
-<div id="merchandise" class="body-text"></div>
+<div id="tickets-container"></div>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -64,7 +71,7 @@
                 const userDataArray = await response.json();
                 if (userDataArray.length > 0) {
                     const userData = userDataArray[0];
-                    document.getElementById('welcomeMessage').innerText = `Welcome to the Gift Shop, ${userData.username}!`;
+                    document.getElementById('welcomeMessage').innerText = `${userData.username}'s Purchased Tickets`;
                 } else {
                     window.location.href = `/`;
                 }
@@ -73,6 +80,7 @@
                 alert('An error occurred while fetching user data.');
             }
         }
+
         const username = window.location.pathname.split('/').pop();
         if (username) {
             fetchUserData(username);
@@ -88,45 +96,32 @@
     });
     document.addEventListener("DOMContentLoaded", async function() {
         try {
-            const response = await fetch(`/admin/merchandise/getItems`);
-            const items = await response.json();
-            const merchandise = document.getElementById("merchandise");
-            items.forEach(item => {
-                const list = document.createElement("li");
-
-                const itemNameAndPrice = document.createElement("span");
-                itemNameAndPrice.textContent = `${item.item_name} - $${item.price}`;
-                list.appendChild(itemNameAndPrice);
-
-                const space = document.createTextNode(" ");
-                list.appendChild(space);
-
-                const quantityInput = document.createElement("input");
-                quantityInput.type = "number";  
-                quantityInput.value = 1;
-                quantityInput.min = 1;
-                quantityInput.max = item.number_in_stock;
-                list.appendChild(quantityInput);
-
-                const purchaseButton = document.createElement("button");
-                purchaseButton.textContent = "Add to cart";
-                purchaseButton.addEventListener("click", async () => {
-                    try {
-                        const username = window.location.pathname.split('/').pop();
-                        const itemId = item.item_id;
-                        const quantity = parseInt(quantityInput.value);
-                        const response = await fetch(`/admin/cart/addItem/${username}/${itemId}/${quantity}`);
-                    } catch (error) {
-                        console.error("Error purchasing item:", error);
-                    }
-                });
-                list.appendChild(purchaseButton);
-                merchandise.appendChild(list);
+            const username = window.location.pathname.split('/').pop();
+            const response = await fetch(`/admin/tickets/getTickets/${username}`)
+            const tickets = await response.json();
+            const ticketsContainer = document.getElementById('tickets-container');
+            tickets.reverse().forEach(ticket => {
+                const ticketBox = document.createElement('div');
+                ticketBox.classList.add('ticket-box');
+                if (ticket.ticket_type === 'General Admission') {
+                    ticketBox.classList.add('general-admission');
+                } else if (ticket.ticket_type === 'Fast Pass') {
+                    ticketBox.classList.add('fast-pass');
+                }
+                ticketBox.innerHTML = `
+                    <h2>${ticket.ticket_type} Ticket</h2>
+                    <p>Valid: ${new Date(ticket.date_valid).toLocaleString().split(',')[0]}</p>
+                    <p>Purchased: ${new Date(ticket.date_purchased).toLocaleString()}</p>
+                `;
+                ticketsContainer.appendChild(ticketBox);
             });
         } catch (error) {
             console.error("Error fetching data:", error);
         }
     });
+
+
+
 </script>
 </body>
 </html>

@@ -3,7 +3,8 @@ const path = require('path')
 const app = express()
 const PORT = process.env.PORT || 3000;
 
-const {getUsers, getUser, getUserByUsername, createUser, getComments, changeEmail, purchaseTicket, registerUser, removeUser, verifyLogin, getCart, addCartItem, removeCartItem, getMerchandise, getAllMerchandise} = require('./database.js');
+const {getUsers, getUser, getUserByUsername, createUser, getComments, changeEmail, purchaseTicket, getTickets, registerUser, 
+    removeUser, verifyLogin, getCart, addCartItem, removeCartItem, getMerchandise, getAllMerchandise} = require('./database.js');
 
 app.use(express.json());
 app.use(express.static("public"));
@@ -31,6 +32,18 @@ app.get('/home/:username', (req, res) => {
 // Tickets page
 app.get('/tickets/:username', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/tickets.html'))
+}) 
+
+// Purchased tickets page
+app.get('/tickets/purchased/:username', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/purchasedTickets.html'))
+}) 
+
+// Get tickets page
+app.get('/tickets/:type/:username', (req, res) => {
+    const username = req.params.username;
+    const type = req.params.type;
+    res.sendFile(path.join(__dirname, 'public/purchaseTickets.html'))
 }) 
 
 // Community page
@@ -116,7 +129,7 @@ app.get('/admin/cart/addItem/:username/:itemId/:quantity', async (req, res) => {
 });
 
 // Admin use to remove item from cart
-app.delete('/admin/cart/removeItem/:cartId', async (req, res) => {
+app.get('/admin/cart/removeItem/:cartId', async (req, res) => {
     try {
         const cart_id = req.params.cartId;
         const result = await removeCartItem(cart_id);
@@ -148,6 +161,35 @@ app.get('/admin/merchandise/getItem/:id', async (req, res) => {
         const id = req.params.id;
         const merchandise = await getMerchandise(id);
         res.json(merchandise);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Something went wrong');
+    }
+});
+
+// Admin use to get tickets for username
+app.get('/admin/tickets/getTickets/:username', async (req, res) => {
+    try {
+        const username = req.params.username;
+        const tickets = await getTickets(username);
+        res.json(tickets);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Something went wrong');
+    }
+});
+
+// Admin use to add tickets for username
+app.get('/admin/tickets/purchaseTicket/:username/:ticketType/:dateValid', async (req, res) => {
+    console.log("testing");
+    try {
+        const username = req.params.username;
+        const ticketType = req.params.ticketType;
+        const dateValid = req.params.dateValid;
+        console.log("username: ", username, " |type: ", ticketType, " |date: ", dateValid);
+        const result = await purchaseTicket(username, ticketType, dateValid);
+        console.log("result: ", result)
+        res.json(result);
     } catch (error) {
         console.error(error);
         res.status(500).send('Something went wrong');

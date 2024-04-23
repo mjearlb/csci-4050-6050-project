@@ -99,15 +99,6 @@ async function changeEmail(username, newEmail) {
       }
 } // changeEmail
 
-async function purchaseTicket(userId, ticketType, dateValid) {
-    const [result] = await pool.query("INSERT INTO tickets (user_id, ticket_type, date_valid) VALUES (?,?,?)",[userId, ticketType, dateValid])
-    if (result.changedRows > 0) {
-        return true; // ticket was purchased
-    } else {
-        return false; // No rows were updated, ticket purchase failed
-    }
-} // purchaseTicket
-
 // returns cart items of user given id
 async function getCart(username) {
     const id = await getId(username);
@@ -164,8 +155,9 @@ async function checkLogin(username, password) {
     }
 } // checkLogin
 
-async function purchaseTicket(user_id, ticket_type, date_valid) {
-    const [result] = await pool.query("INSERT INTO tickets (user_id, ticket_type, date_valid) VALUES (?, ?, ?)", [user_id, ticket_type, date_valid])
+async function purchaseTicket(username, ticket_type, date_valid) {
+    const user_id = await getId(username);
+    const [result] = await pool.query("INSERT INTO tickets (user_id, ticket_type, date_valid) VALUES (?, ?, ?)", [user_id.id, ticket_type, date_valid])
     if (result.affectedRows > 0) {
         return true; // ticket was created
     } else {
@@ -173,9 +165,10 @@ async function purchaseTicket(user_id, ticket_type, date_valid) {
     }
 } // purchaseTicket
 
-async function getTickets(user_id) {
-    const [result] = await pool.query("SELECT * FROM tickets WHERE user_id = ?", [user_id])
-    return result
+async function getTickets(username) {
+    const id = await getId(username);
+    const [rows] = await pool.query("SELECT * FROM tickets WHERE user_id = ?", [id.id])
+    return rows
 } // getTickets
  
 
