@@ -121,9 +121,9 @@ async function addCartItem(username, item_id, quantity) {
     const time_added = new Date().toISOString().slice(0, 19).replace('T', ' ');
     const [result] = await pool.query("INSERT INTO cart (user_id, item_id, quantity, time_added, is_active) VALUES (?, ?, ?, ?, ?)", [user_id.id, item_id, quantity, time_added, 1]);
     if (result.affectedRows > 0) {
-        return true; // cart was created
+        return true; // item was added to cart
     } else {
-        return false; // cart was not created
+        return false; // item was not added to cart
     }
 } // addCartItem
 
