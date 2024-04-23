@@ -14,6 +14,13 @@ Testing Plan for Back End Server:
             * DELETE /users/removeUser endpoint
             * GET /comments/getComments endpoint
             * POST /tickets/purchaseTickets endpoint
+            * POST /admin/verifyLogin endpoint
+            * GET /admin/getUser/username/:username endpoint
+            * GET /admin/cart/getItems/:username endpoint
+            * POST /admin/cart/addItem endpoint
+            * DELETE /admin/cart/removeItem/:cartId endpoint
+            * GET /admin/merchandise/getItems endpoint
+            * GET /admin/merchandise/getItem/:id endpoint
 
         Unit Testing Instructions:
         - cd into the server directory
@@ -38,6 +45,13 @@ Testing Plan for Back End Server:
         * DELETE /users/removeUser -> removes the users account from the database
         * GET /comments/getComments -> returns the whole list of comments that have been made on the site
         * POST /tickets/purchaseTickets -> adds the tickets to the tickets table and links the tickets to the user's account
+        * POST /admin/verifyLogin -> verifys the username and password upon login
+        * GET /admin/getUser/username/:username -> returns the user with the specified username
+        * GET /admin/cart/getItems/:username -> returns all of the items currently inside the specified user's cart
+        * POST /admin/cart/addItem -> adds the specific item (and quantity) to the specified user's cart
+        * DELETE /admin/cart/removeItem/:cartId -> removes the item with the specified id number from the cart
+        * GET /admin/merchandise/getItems ->  returns the entire list of merchandise items currently in stock          
+        * GET /admin/merchandise/getItem/:id -> returns the specific merchandise item based on it's id
 
        Postman Testing Instructions:
        - cd into the server
@@ -47,6 +61,33 @@ Testing Plan for Back End Server:
 
 
 
-    3. Integration or (E2E) Testing
+    3. End-to-End Testing
+        - Once the front end is completed we will perform end-to-end testing of the entire application
+        - This will include running our current front-end, back-end, and databse all together at the same time
+        - Since we have already performed thorough testing of the back-end this stage of testing should be fairly brief 
+        - Main goal is just to ensure that after combining all of the components, the API's are still functional and meet
+          the project requirements
+
+        Back-End items that will be tested during the end-to-end testing stage:
+        * GET /users/getUsers -> returns the whole list of currently registered users
+        * GET /users/getUser/:id -> returns user with the specified account id
+        * PUT /users/changeEmail/:username/:newEmail -> updates the email of the user's account
+        * POST /users/registerUser -> creates a new user account with the requests body information and registers it
+        * DELETE /users/removeUser -> removes the users account from the database
+        * GET /comments/getComments -> returns the whole list of comments that have been made on the site
+        * POST /tickets/purchaseTickets -> adds the tickets to the tickets table and links the tickets to the user's account
+        * POST /admin/verifyLogin -> verifys the username and password upon login
+        * GET /admin/getUser/username/:username -> returns the user with the specified username
+        * GET /admin/cart/getItems/:username -> returns all of the items currently inside the specified user's cart
+        * POST /admin/cart/addItem -> adds the specific item (and quantity) to the specified user's cart
+        * DELETE /admin/cart/removeItem/:cartId -> removes the item with the specified id number from the cart
+        * GET /admin/merchandise/getItems ->  returns the entire list of merchandise items currently in stock          
+        * GET /admin/merchandise/getItem/:id -> returns the specific merchandise item based on it's id
+
+        End-to-End Testing Instructions:
+        - Make sure that all front-end, back-end, and database versions are up to date (running on main)
+        - Create one terminal and begin hosting the back-end server
+        - Create a second terminal and begin running the front-end client
+        - Lastly, perform test cases for each of the items above
 
 
