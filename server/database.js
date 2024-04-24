@@ -69,6 +69,12 @@ async function getComments() {
     return rows
 } // getComments
 
+async function getChildComments(parent_id) {
+    const result = await pool.query("SELECT * FROM comments WHERE parent_id = ?", [parent_id])
+    const children = result[0]
+    return children
+}
+
 // add comment to database
 async function addComment(username, comment) {
     const user_id = await getId(username);
@@ -199,13 +205,17 @@ module.exports = {
     getAllMerchandise, 
     checkLogin, 
     purchaseTicket, 
-    getTickets
+    getTickets, 
+    addComment, 
+    addCommentReply, 
+    getUsername
 };
 
 // testing
 
 async function run() {
-    const testPurchTick = await purchaseTicket(1000, "General Admission", "2024-04-23")
+    const testGetChildren = await getChildComments(1)
+    console.log(testGetChildren)
 }
 
-//run()
+run()
