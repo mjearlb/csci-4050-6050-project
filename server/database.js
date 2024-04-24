@@ -107,7 +107,12 @@ async function deleteComment(comment_id) {
 } // deleteComment
 
 async function deleteAllComments(user_id) {
-
+    const [result] = await pool.query("DELETE FROM comments WHERE user_id = ?", [user_id]);
+    if (result.affectedRows > 0) {
+        return true; // comment was created
+    } else {
+        return false; // comment was not created
+    }
 } // deleteAllComments
 
 async function removeUser(username) {
@@ -228,7 +233,7 @@ module.exports = {
 // testing
 
 async function run() {
-    const test = await deleteComment(3)
+    const test = await deleteAllComments(1002)
 }
 
-//run()
+run()
