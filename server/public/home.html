@@ -51,7 +51,10 @@
 </header>
 
 <div>
-    <h1 class="body-text" id="welcomeMessage">Welcome to our Home page!</h1>
+    <h1 class="body-text" id="welcomeMessage">Welcome to Georgia Coasters!</h1>
+    <h2 class="body-text">Get Ready For The Time of Your Life!!!</h2>
+    <p class="body-text">Welcome to Georgia Coasters, where thrill-seekers unite! With our exhilarating rides, exciting events, and fun-filled attractions, there's something for everyone to enjoy.</p>
+    <p class="body-text">Get ready to experience heart-pounding excitement and unforgettable memories!</p>
     <p class="body-text">Take a look at some of our attractions:</p>
     <img src="https://st.depositphotos.com/1788940/1328/i/380/depositphotos_13285507-stock-photo-rollercoaster-ride.jpg" alt="Roller Coaster"><br>
     <img src="https://st3.depositphotos.com/17484154/35762/i/450/depositphotos_357625554-stock-photo-low-angle-view-ferris-wheel.jpg" alt="Ferris Wheel"><br>
@@ -67,7 +70,7 @@
                 const userDataArray = await response.json();
                 if (userDataArray.length > 0) {
                     const userData = userDataArray[0];
-                    document.getElementById('welcomeMessage').innerText = `Welcome to our Home page, ${userData.username}!`;
+                    document.getElementById('welcomeMessage').innerText = `Welcome to Georgia Coasters, ${userData.username}!`;
                 } else {
                     window.location.href = `/`;
                 }
