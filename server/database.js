@@ -73,7 +73,11 @@ async function getChildComments(parent_id) {
     const result = await pool.query("SELECT * FROM comments WHERE parent_id = ?", [parent_id])
     const children = result[0]
     return children
-}
+} // getChildComments
+
+async function deleteChildComments(parent_id) {
+    const result = await pool.query("DELETE FROM comments WHERE parent_id = ?", [parent_id])
+} // deleteChildComments
 
 // add comment to database
 async function addComment(username, comment) {
@@ -99,6 +103,7 @@ async function addCommentReply(username, comment, parent_id) {
 
 async function deleteComment(comment_id) {
     const [result] = await pool.query("DELETE FROM comments WHERE id = ?", [comment_id]);
+    const [result2] = await pool.query("DELETE FROM comments WHERE parent_id = ?", [comment_id]);
     if (result.affectedRows > 0) {
         return true; // comment was created
     } else {
@@ -107,8 +112,10 @@ async function deleteComment(comment_id) {
 } // deleteComment
 
 async function deleteAllComments(user_id) {
-    const [result] = await pool.query("DELETE FROM comments WHERE user_id = ?", [user_id]);
-    if (result.affectedRows > 0) {
+    const [parent] = await pool.query("SELECT * FROM comments WHERE user_id = ?", [user_id]);
+    const delChildren = await deleteChildComments(parent.id)
+    const [result2] = await pool.query("DELETE FROM comments WHERE user_id = ?", [user_id]);
+    if (result2.affectedRows > 0) {
         return true; // comment was created
     } else {
         return false; // comment was not created
@@ -249,11 +256,8 @@ module.exports = {
 
 async function run() {
     const addUser = await registerUser("TEST", "TEST", "TEST", "TEST", "TEST")
-    console.log(await checkLogin("TEST", "TEST"))
-    const addComments = addComment("TEST", "TEST")
-    console.log(await getComments())
-    const remove = removeUser("TEST")
-    console.log(await checkLogin("TEST", "TEST"))
+    const addComments = await addComment("TEST", "TEST")
+    const remove = await removeUser("TEST")
 }
 
-//run()
+run()
