@@ -47,7 +47,7 @@
                 const password = formData.get('password');
 
                 try {
-                    const response = await fetch('/admin/verifyLogin', {
+                    const response = await fetch('/admin/checkLogin', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'

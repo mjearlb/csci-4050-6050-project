@@ -63,16 +63,6 @@ async function registerUser(username, lastname, firstname, email, password) {
     return result
 } // registerUser   
 
-// Verifies that password matches too username
-async function verifyLogin(username, password) {
-    const [result] = await pool.query("SELECT password FROM users WHERE username = ?", [username]);
-    if (result && result.length > 0 && result[0].password === password) {
-        return true;
-    } else {
-        return false;
-    }
-} // verifyLogin
-
 async function getComments() {
     const result = await pool.query("SELECT * FROM comments")
     const rows = result[0]
@@ -204,7 +194,6 @@ module.exports = {
     getComments, 
     changeEmail, 
     purchaseTicket, 
-    verifyLogin, 
     getUserByUsername, 
     getCart,
     addCartItem,

@@ -4,7 +4,7 @@ const app = express()
 const PORT = process.env.PORT || 3000;
 
 const {getUsers, getUser, getUserByUsername, createUser, getComments, changeEmail, purchaseTicket, getTickets, registerUser, 
-    removeUser, verifyLogin, getCart, addCartItem, removeCartItem, getMerchandise, getAllMerchandise} = require('./database.js');
+    removeUser, checkLogin, getCart, addCartItem, removeCartItem, getMerchandise, getAllMerchandise} = require('./database.js');
 
 app.use(express.json());
 app.use(express.static("public"));
@@ -68,11 +68,11 @@ app.get('/account/:username', (req, res) => {
 
 
 // Admin commands used to return database items
-// Admin use to verify login
-app.post('/admin/verifyLogin', async (req, res) => {
+// Admin use to check login
+app.post('/admin/checkLogin', async (req, res) => {
     const { username, password } = req.body;
     try {
-        const success = await verifyLogin(username, password);
+        const success = await checkLogin(username, password);
         if (success) {
             // If login successful, get user information
             const user = await getUser(username);
@@ -81,7 +81,7 @@ app.post('/admin/verifyLogin', async (req, res) => {
             res.json({ success: false });
         }
     } catch (error) {
-        console.error('Error verifying login:', error);
+        console.error('Error Checking login:', error);
         res.status(500).json({ success: false, message: 'Internal server error' });
     }
 });
