@@ -195,6 +195,9 @@ module.exports = {
     registerUser,
     removeUser,
     getComments, 
+    getChildComments,
+    addComment,
+    addCommentReply,
     changeEmail, 
     purchaseTicket, 
     getUserByUsername, 
@@ -206,8 +209,6 @@ module.exports = {
     checkLogin, 
     purchaseTicket, 
     getTickets, 
-    addComment, 
-    addCommentReply, 
     getUsername
 };
 
