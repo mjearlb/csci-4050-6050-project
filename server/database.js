@@ -129,7 +129,7 @@ async function deleteAllTickets(user_id) {
     } else {
         return false; // comment was not created
     }
-}
+} // deleteAllTickets
 
 async function removeUser(username) {
     id = await getId(username)
@@ -254,7 +254,8 @@ module.exports = {
     getUsername, 
     deleteAllComments, 
     deleteComment, 
-    deleteAllTickets
+    deleteAllTickets, 
+    dumpCart
 };
 
 // testing
