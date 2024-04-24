@@ -133,6 +133,7 @@ async function deleteAllTickets(user_id) {
 
 async function removeUser(username) {
     id = await getId(username)
+    dumpCart(id.id)
     deleteAllComments(id.id)
     deleteAllTickets(id.id)
     const [result] = await pool.query("DELETE FROM users WHERE username = ?", [username])
@@ -181,6 +182,10 @@ async function removeCartItem(cart_id) {
         return false; // No rows were updated, cart deletion failed
     }
 } // removeCartItem
+
+async function dumpCart(user_id) {
+    const [result] = await pool.query("DELETE FROM cart WHERE user_id = ?", [user_id])
+} // dumpCart
 
 // Returns all merchandise
 async function getAllMerchandise() {
