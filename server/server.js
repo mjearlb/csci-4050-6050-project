@@ -3,7 +3,7 @@ const path = require('path')
 const app = express()
 const PORT = process.env.PORT || 3000;
 
-const {getUsers, getUser, getUserByUsername, createUser, getComments, changeEmail, purchaseTicket, getTickets, registerUser, 
+const {getUsers, getUser, getUserByUsername, createUser, getComments, addComment, addCommentReply, changeEmail, purchaseTicket, getTickets, registerUser, 
     removeUser, checkLogin, getCart, addCartItem, removeCartItem, getMerchandise, getAllMerchandise} = require('./database.js');
 
 app.use(express.json());

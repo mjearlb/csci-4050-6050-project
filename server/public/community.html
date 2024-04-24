@@ -58,7 +58,6 @@
 
 <div class="body-text">
     <h1 id="welcomeMessage">Welcome to our Community page!</h1>
-    <p>Add Community discussion board to this page</p>
 </div>
 
 <div class="body-text">
@@ -138,7 +137,8 @@
     // implement reply system 
     async function addComment(e){
         //e.preventDefault(); //prevents the page from refreshing, currently turned off
-        var comment = document.getElementById('textbox').value
+        
+        var comment = document.getElementById('box').value
         var username = window.location.pathname.split('/').pop();
         const response = await fetch(`/admin/comment/addComment/${username}/${comment}`); 
         const items = await response.json();   
