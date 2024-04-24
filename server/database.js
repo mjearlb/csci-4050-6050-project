@@ -72,8 +72,7 @@ async function getComments() {
 // add comment to database
 async function addComment(username, comment) {
     const user_id = await getId(username);
-    const time_stamp = new Date().toISOString().slice(0, 19).replace('T', ' ');
-    const [result] = await pool.query("INSERT INTO comments (user_id, comment, time_stamp) VALUES (?, ?, ?)", [user_id.id, comment, time_stamp]);
+    const [result] = await pool.query("INSERT INTO comments (user_id, comment) VALUES (?, ?)", [user_id.id, comment]);
     if (result.affectedRows > 0) {
         return true; // comment was created
     } else {
@@ -84,8 +83,7 @@ async function addComment(username, comment) {
 // add comment that is a reply to database
 async function addCommentReply(username, comment, parent_id) {
     const user_id = await getId(username);
-    const time_stamp = new Date().toISOString().slice(0, 19).replace('T', ' ');
-    const [result] = await pool.query("INSERT INTO comments (user_id, comment, parent_id, time_stamp) VALUES (?, ?, ?, ?)", [user_id.id, comment, parent_id, time_stamp]);
+    const [result] = await pool.query("INSERT INTO comments (user_id, comment, parent_id) VALUES (?, ?, ?)", [user_id.id, comment, parent_id]);
     if (result.affectedRows > 0) {
         return true; // comment was created
     } else {
@@ -123,8 +121,7 @@ async function getCart(username) {
 // adds item to cart
 async function addCartItem(username, item_id, quantity) {
     const user_id = await getId(username);
-    const time_added = new Date().toISOString().slice(0, 19).replace('T', ' ');
-    const [result] = await pool.query("INSERT INTO cart (user_id, item_id, quantity, time_added, is_active) VALUES (?, ?, ?, ?, ?)", [user_id.id, item_id, quantity, time_added, 1]);
+    const [result] = await pool.query("INSERT INTO cart (user_id, item_id, quantity, is_active) VALUES (?, ?, ?, ?)", [user_id.id, item_id, quantity, 1]);
     if (result.affectedRows > 0) {
         return true; // item was added to cart
     } else {
