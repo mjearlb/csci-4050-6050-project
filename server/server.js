@@ -255,7 +255,7 @@ app.get('/login', async (req, res) => {
 
 // Calls the getComments() DB method
 // returns all of the comments that have been made
-app.get('/comments/getComments', async (req, res) => {
+app.get('/admin/comments/getComments', async (req, res) => {
     try {
         const comments = await getComments();
         res.json(comments);

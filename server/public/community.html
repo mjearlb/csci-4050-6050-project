@@ -117,15 +117,15 @@
     // Fetch comments from server and render them
     async function fetchComments() {
         try {
-          const response = await fetch('/getCommentsFromSQL');
-          const comments = await response.json();
-
-          const commentsList = document.getElementById('comments-list');
-          comments.forEach(comment => {
-            const li = document.createElement('li');
-            li.textContent = comment.comment;
-            commentsList.appendChild(li);
-        });
+            const response = await fetch('/admin/comments/getComments');
+            const comments = await response.json();
+            updateCommentCount(comments.length); 
+            const commentsList = document.getElementById('comments-list');
+            comments.forEach(comment => {
+                const li = document.createElement('li');
+                li.textContent = comment.comment;
+                commentsList.appendChild(li);
+            });
         } catch (error) {
           console.error('Error fetching comments:', error);
         }   
