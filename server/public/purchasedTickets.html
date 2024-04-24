@@ -61,7 +61,10 @@
 <div>
     <h1 id="welcomeMessage">Your Purchased Tickets:!</h1>
 </div>
-<div id="tickets-container"></div>
+<h2>Upcoming Tickets:</h2>
+<div id="valid-tickets-container"></div>
+<h2>Expired Tickets:</h2>
+<div id="expired-tickets-container"></div>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -99,7 +102,9 @@
             const username = window.location.pathname.split('/').pop();
             const response = await fetch(`/admin/tickets/getTickets/${username}`)
             const tickets = await response.json();
-            const ticketsContainer = document.getElementById('tickets-container');
+            const validTicketsContainer = document.getElementById('valid-tickets-container');
+            const expiredTicketsContainer = document.getElementById('expired-tickets-container');
+
             tickets.reverse().forEach(ticket => {
                 const ticketBox = document.createElement('div');
                 ticketBox.classList.add('ticket-box');
@@ -113,15 +118,18 @@
                     <p>Valid: ${new Date(ticket.date_valid).toLocaleString().split(',')[0]}</p>
                     <p>Purchased: ${new Date(ticket.date_purchased).toLocaleString()}</p>
                 `;
-                ticketsContainer.appendChild(ticketBox);
+                const currentDate = new Date();
+                const validDate = new Date(ticket.date_valid);
+                if (validDate < currentDate) {
+                    expiredTicketsContainer.appendChild(ticketBox);
+                } else {
+                    validTicketsContainer.appendChild(ticketBox);
+                }
             });
         } catch (error) {
             console.error("Error fetching data:", error);
         }
     });
-
-
-
 </script>
 </body>
 </html>
