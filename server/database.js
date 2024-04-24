@@ -97,6 +97,19 @@ async function addCommentReply(username, comment, parent_id) {
     }
 } // addCommentReply
 
+async function deleteComment(comment_id) {
+    const [result] = await pool.query("DELETE FROM comments WHERE id = ?", [comment_id]);
+    if (result.affectedRows > 0) {
+        return true; // comment was created
+    } else {
+        return false; // comment was not created
+    }
+} // deleteComment
+
+async function deleteAllComments(user_id) {
+
+} // deleteAllComments
+
 async function removeUser(username) {
     const [result] = await pool.query("DELETE FROM users WHERE username = ?", [username])
     if (result.affectedRows > 0) {
@@ -215,8 +228,7 @@ module.exports = {
 // testing
 
 async function run() {
-    const testGetChildren = await getChildComments(1)
-    console.log(testGetChildren)
+    const test = await deleteComment(3)
 }
 
 //run()
