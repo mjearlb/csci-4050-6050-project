@@ -321,7 +321,7 @@ app.put('/users/changeEmail/:username/:newEmail', async (req, res) => {
 // Calls the removeUser() DB method
 // removes/deletes the users account
 // -- might need to add some code changes here
-app.delete('/users/removeUser/:username', async (req, res) => {
+app.get('/users/removeUser/:username', async (req, res) => {
     try {
         const username = req.params.username;
         const result = await removeUser(username);

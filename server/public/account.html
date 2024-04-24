@@ -157,5 +157,21 @@
             }
         });
 </script>
+<p style="color: black;">Account Deletion:</p>
+<p style="color: black;">Warning: This cannot be undone!</p>
+
+<button onclick="dFunction()">Delete Account</button>
+<script>
+    async function dFunction() {
+        const username = window.location.pathname.split('/').pop();
+        let response = fetch(`/users/removeUser/${username}`);
+        if(response) {
+            alert('Your account has been deleted.');
+            window.location.href = `/`;
+        } else {
+            alert('Something went wrong.');
+        }
+    }
+</script>
 </body>
 </html>
