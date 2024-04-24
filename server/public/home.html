@@ -50,9 +50,11 @@
     <a href="/" class="header-buttons">Log Out</a>
 </header>
 
-<div>
-    <h1 class="body-text" id="welcomeMessage">Welcome to our Home page!</h1>
-    <p class="body-text">This is just a welcome screen saying hello to guests.</p>
+<div class="body-text">
+    <h1 id="welcomeMessage">Welcome to Georia Coasters!</h1>
+    <h2>Get Ready For The Time of Your Life!!!</h2>
+    <p>Welcome to Georgia Coasters, where thrill-seekers unite! With our exhilarating rides, exciting events, and fun-filled attractions, there's something for everyone to enjoy.</p>
+    <p>Get ready to experience heart-pounding excitement and unforgettable memories!</p>
 </div>
 
 <script>
@@ -63,7 +65,7 @@
                 const userDataArray = await response.json();
                 if (userDataArray.length > 0) {
                     const userData = userDataArray[0];
-                    document.getElementById('welcomeMessage').innerText = `Welcome to our Home page, ${userData.username}!`;
+                    document.getElementById('welcomeMessage').innerText = `Welcome to Georgia Coasters, ${userData.username}!`;
                 } else {
                     window.location.href = `/`;
                 }
