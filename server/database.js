@@ -116,6 +116,8 @@ async function deleteAllComments(user_id) {
 } // deleteAllComments
 
 async function removeUser(username) {
+    id = await getId(username)
+    deleteAllComments(id.id)
     const [result] = await pool.query("DELETE FROM users WHERE username = ?", [username])
     if (result.affectedRows > 0) {
         return true; // user was successfully removed
@@ -233,7 +235,12 @@ module.exports = {
 // testing
 
 async function run() {
-    const test = await deleteAllComments(1002)
+    const addUser = await registerUser("TEST", "TEST", "TEST", "TEST", "TEST")
+    console.log(await checkLogin("TEST", "TEST"))
+    const addComments = addComment("TEST", "TEST")
+    console.log(await getComments())
+    const remove = removeUser("TEST")
+    console.log(await checkLogin("TEST", "TEST"))
 }
 
 run()
