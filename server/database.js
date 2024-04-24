@@ -229,7 +229,9 @@ module.exports = {
     checkLogin, 
     purchaseTicket, 
     getTickets, 
-    getUsername
+    getUsername, 
+    deleteAllComments, 
+    deleteComment
 };
 
 // testing
