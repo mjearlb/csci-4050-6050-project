@@ -115,9 +115,19 @@ async function deleteAllComments(user_id) {
     }
 } // deleteAllComments
 
+async function deleteAllTickets(user_id) {
+    const [result] = await pool.query("DELETE FROM tickets WHERE user_id = ?", [user_id]);
+    if (result.affectedRows > 0) {
+        return true; // comment was created
+    } else {
+        return false; // comment was not created
+    }
+}
+
 async function removeUser(username) {
     id = await getId(username)
     deleteAllComments(id.id)
+    deleteAllTickets(id.id)
     const [result] = await pool.query("DELETE FROM users WHERE username = ?", [username])
     if (result.affectedRows > 0) {
         return true; // user was successfully removed
@@ -231,7 +241,8 @@ module.exports = {
     getTickets, 
     getUsername, 
     deleteAllComments, 
-    deleteComment
+    deleteComment, 
+    deleteAllTickets
 };
 
 // testing
@@ -245,4 +256,4 @@ async function run() {
     console.log(await checkLogin("TEST", "TEST"))
 }
 
-run()
+//run()
